@@ -55,6 +55,20 @@ target_include_directories(struct_layout_experiment PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
+add_executable(aos_vs_soa_benchmark
+        benchmarks/aos_vs_soa_benchmark.cpp
+)
+target_include_directories(aos_vs_soa_benchmark PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+add_executable(branch_prediction_benchmark
+        benchmarks/branch_prediction_benchmark.cpp
+)
+target_include_directories(branch_prediction_benchmark PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
 enable_testing()
 include(GoogleTest)
 gtest_discover_tests(llp_tests)

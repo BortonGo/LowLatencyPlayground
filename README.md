@@ -23,7 +23,12 @@ Stage 2: cache locality
 
 - false sharing demo
 - struct layout experiment
-- AoS vs SoA benchmark в работе
+- AoS vs SoA benchmark
+- branch prediction benchmark
+
+Stage 3: allocations and memory
+
+- heap allocation cost benchmark в работе
 
 ## Структура
 
@@ -119,11 +124,14 @@ max. Часто самое интересное прячется именно в
 - [False sharing demo](notes/stage_02_cache_locality/task_01_false_sharing_demo/task.md)
 - [Struct layout experiment](notes/stage_02_cache_locality/task_02_struct_layout_experiment/task.md)
 - [AoS vs SoA benchmark](notes/stage_02_cache_locality/task_03_aos_vs_soa_benchmark/task.md)
+- [Branch prediction benchmark](notes/stage_02_cache_locality/task_04_branch_prediction_benchmark/task.md)
+
+### Stage 3. Allocations and Memory
+
+- [Heap allocation cost benchmark](notes/stage_03_allocations_memory/task_01_heap_allocation_cost/task.md)
 
 ### Next Topics
 
-- branch prediction basics
-- heap allocation cost
 - fixed-size memory pool
 - object pool
 - ring buffer
