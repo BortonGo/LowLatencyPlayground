@@ -76,6 +76,13 @@ target_include_directories(benchmark_new_delete_vs_reuse PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
+add_executable(benchmark_fixed_pool
+        benchmarks/benchmark_fixed_pool.cpp
+)
+target_include_directories(benchmark_fixed_pool PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
 enable_testing()
 include(GoogleTest)
 gtest_discover_tests(llp_tests)

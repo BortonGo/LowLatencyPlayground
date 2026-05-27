@@ -28,7 +28,9 @@ Stage 2: cache locality
 
 Stage 3: allocations and memory
 
-- heap allocation cost benchmark в работе
+- heap allocation cost benchmark
+- fixed-size memory pool
+- ObjectPool<T> в работе
 
 ## Структура
 
@@ -130,10 +132,10 @@ max. Часто самое интересное прячется именно в
 
 - [Heap allocation cost benchmark](notes/stage_03_allocations_memory/task_01_heap_allocation_cost/task.md)
 - [Fixed-size memory pool benchmark](notes/stage_03_allocations_memory/task_02_fixed_size_memory_pool/task.md)
+- [ObjectPool<T>](notes/stage_03_allocations_memory/task_03_object_pool/task.md)
 
 ### Next Topics
 
-- fixed-size memory pool
 - object pool
 - ring buffer
 - SPSC queue
