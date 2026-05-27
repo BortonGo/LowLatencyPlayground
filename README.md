@@ -129,6 +129,7 @@ max. Часто самое интересное прячется именно в
 ### Stage 3. Allocations and Memory
 
 - [Heap allocation cost benchmark](notes/stage_03_allocations_memory/task_01_heap_allocation_cost/task.md)
+- [Fixed-size memory pool benchmark](notes/stage_03_allocations_memory/task_02_fixed_size_memory_pool/task.md)
 
 ### Next Topics
 

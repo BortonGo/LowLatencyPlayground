@@ -69,6 +69,13 @@ target_include_directories(branch_prediction_benchmark PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
+add_executable(benchmark_new_delete_vs_reuse
+        benchmarks/benchmark_new_delete_vs_reuse.cpp
+)
+target_include_directories(benchmark_new_delete_vs_reuse PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
 enable_testing()
 include(GoogleTest)
 gtest_discover_tests(llp_tests)
