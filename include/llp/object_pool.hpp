@@ -22,12 +22,12 @@ namespace llp {
             return &storage[idx];
         }
         void release(T* t) {
-            // TODO: this simple pool does not detect double release.
             if (!t) throw std::runtime_error("Cannot release nullptr");
             T* begin = storage.data();
             T* end = begin + storage.size();
             if (t < begin || t >= end) throw std::runtime_error("Pointer does not belong to this pool");
             const std::size_t idx = static_cast<std::size_t>(t - begin);
+            if (free_list.back() == idx) throw std::runtime_error("Cannot double release");
             free_list.push_back(idx);
         }
         std::size_t capacity() const noexcept {
