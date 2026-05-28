@@ -30,7 +30,8 @@ Stage 3: allocations and memory
 
 - heap allocation cost benchmark
 - fixed-size memory pool
-- ObjectPool<T> в работе
+- ObjectPool<T>
+- no-allocation pipeline в работе
 
 ## Структура
 
@@ -133,10 +134,10 @@ max. Часто самое интересное прячется именно в
 - [Heap allocation cost benchmark](notes/stage_03_allocations_memory/task_01_heap_allocation_cost/task.md)
 - [Fixed-size memory pool benchmark](notes/stage_03_allocations_memory/task_02_fixed_size_memory_pool/task.md)
 - [ObjectPool<T>](notes/stage_03_allocations_memory/task_03_object_pool/task.md)
+- [No-allocation pipeline](notes/stage_03_allocations_memory/task_04_no_allocation_pipeline/task.md)
 
 ### Next Topics
 
-- object pool
 - ring buffer
 - SPSC queue
 - atomics and memory ordering

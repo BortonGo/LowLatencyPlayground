@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 23)
 add_executable(LowLatencyPlayground main.cpp
         include/llp/latency_stats.hpp
         include/llp/benchmark_timer.hpp
+        include/llp/object_pool.hpp
 )
 
 target_include_directories(LowLatencyPlayground PRIVATE
@@ -20,6 +21,7 @@ find_package(GTest CONFIG REQUIRED)
 add_executable(llp_tests
         tests/test_latency_stats.cpp
         tests/test_benchmark_timer.cpp
+        tests/test_object_pool.cpp
 )
 target_include_directories(llp_tests PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -80,6 +82,13 @@ add_executable(benchmark_fixed_pool
         benchmarks/benchmark_fixed_pool.cpp
 )
 target_include_directories(benchmark_fixed_pool PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+add_executable(benchmark_object_pool
+        benchmarks/benchmark_object_pool.cpp
+)
+target_include_directories(benchmark_object_pool PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
