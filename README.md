@@ -31,6 +31,10 @@ Stage 3: allocations and memory
 - heap allocation cost benchmark
 - fixed-size memory pool
 - ObjectPool<T>
+
+Stage 4: queues and concurrency
+
+- fixed-capacity ring buffer in progress
 - no-allocation pipeline в работе
 
 ## Структура
@@ -135,6 +139,10 @@ max. Часто самое интересное прячется именно в
 - [Fixed-size memory pool benchmark](notes/stage_03_allocations_memory/task_02_fixed_size_memory_pool/task.md)
 - [ObjectPool<T>](notes/stage_03_allocations_memory/task_03_object_pool/task.md)
 - [No-allocation pipeline](notes/stage_03_allocations_memory/task_04_no_allocation_pipeline/task.md)
+
+### Stage 4. Queues and Concurrency
+
+- [Fixed-capacity ring buffer](notes/stage_04_queues_and_concurrency/task_01_ring_buffer/task.md)
 
 ### Next Topics
 

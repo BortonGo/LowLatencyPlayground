@@ -8,7 +8,6 @@ add_executable(LowLatencyPlayground main.cpp
         include/llp/benchmark_timer.hpp
         include/llp/object_pool.hpp
 )
-
 target_include_directories(LowLatencyPlayground PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -18,6 +17,7 @@ target_include_directories(LowLatencyPlayground PRIVATE
 
 find_package(GTest CONFIG REQUIRED)
 
+# ============ TESTS ============
 add_executable(llp_tests
         tests/test_latency_stats.cpp
         tests/test_benchmark_timer.cpp
@@ -30,6 +30,7 @@ target_link_libraries(llp_tests PRIVATE
         GTest::gtest_main
 )
 
+# ============ benchmark_vector_push_back ============
 add_executable(benchmark_vector_push_back
         benchmarks/benchmark_vector_push_back.cpp
 )
@@ -37,6 +38,7 @@ target_include_directories(benchmark_vector_push_back PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
+# ============ benchmark_list_vs_vector ============
 add_executable(benchmark_list_vs_vector
         benchmarks/benchmark_list_vs_vector.cpp
 )
@@ -44,12 +46,14 @@ target_include_directories(benchmark_list_vs_vector PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
+# ============ false_sharing_demo ============
 add_executable(false_sharing_demo
         benchmarks/false_sharing_demo.cpp
 )
 find_package(Threads REQUIRED)
 target_link_libraries(false_sharing_demo PRIVATE Threads::Threads)
 
+# ============ struct_layout_experiment ============
 add_executable(struct_layout_experiment
         benchmarks/struct_layout_experiment.cpp
 )
@@ -57,6 +61,7 @@ target_include_directories(struct_layout_experiment PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
+# ============ aos_vs_soa_benchmark ============
 add_executable(aos_vs_soa_benchmark
         benchmarks/aos_vs_soa_benchmark.cpp
 )
@@ -64,6 +69,7 @@ target_include_directories(aos_vs_soa_benchmark PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
+# ============ branch_prediction_benchmark ============
 add_executable(branch_prediction_benchmark
         benchmarks/branch_prediction_benchmark.cpp
 )
@@ -71,6 +77,7 @@ target_include_directories(branch_prediction_benchmark PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
+# ============ benchmark_new_delete_vs_reuse ============
 add_executable(benchmark_new_delete_vs_reuse
         benchmarks/benchmark_new_delete_vs_reuse.cpp
 )
@@ -78,6 +85,7 @@ target_include_directories(benchmark_new_delete_vs_reuse PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
+# ============ benchmark_fixed_pool ============
 add_executable(benchmark_fixed_pool
         benchmarks/benchmark_fixed_pool.cpp
 )
@@ -85,10 +93,19 @@ target_include_directories(benchmark_fixed_pool PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
+# ============ benchmark_object_pool ============
 add_executable(benchmark_object_pool
         benchmarks/benchmark_object_pool.cpp
 )
 target_include_directories(benchmark_object_pool PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+# ============ benchmark_no_allocation_pipeline ============
+add_executable(benchmark_no_allocation_pipeline
+        benchmarks/benchmark_no_allocation_pipeline.cpp
+)
+target_include_directories(benchmark_no_allocation_pipeline PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
