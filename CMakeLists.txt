@@ -7,6 +7,7 @@ add_executable(LowLatencyPlayground main.cpp
         include/llp/latency_stats.hpp
         include/llp/benchmark_timer.hpp
         include/llp/object_pool.hpp
+        include/llp/ring_buffer.hpp
 )
 target_include_directories(LowLatencyPlayground PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}
@@ -22,6 +23,7 @@ add_executable(llp_tests
         tests/test_latency_stats.cpp
         tests/test_benchmark_timer.cpp
         tests/test_object_pool.cpp
+        tests/test_ring_buffer.cpp
 )
 target_include_directories(llp_tests PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -106,6 +108,14 @@ add_executable(benchmark_no_allocation_pipeline
         benchmarks/benchmark_no_allocation_pipeline.cpp
 )
 target_include_directories(benchmark_no_allocation_pipeline PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+# ============ benchmark_ring_buffer ============
+add_executable(benchmark_ring_buffer
+        benchmarks/benchmark_ring_buffer.cpp
+)
+target_include_directories(benchmark_ring_buffer PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 

@@ -146,7 +146,6 @@ max. Часто самое интересное прячется именно в
 
 ### Next Topics
 
-- ring buffer
 - SPSC queue
 - atomics and memory ordering
 - simple market data parser
