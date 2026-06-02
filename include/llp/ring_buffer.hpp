@@ -12,7 +12,7 @@ namespace llp {
         std::size_t tail_ = 0;
     public:
         explicit RingBuffer(std::size_t cap) : storage_(cap) {
-            throw std::invalid_argument("Capacity must be greater than zero");
+            if (cap == 0) throw std::invalid_argument("Capacity must be greater than zero");
         }
         bool push(const T& value) {
             if (full()) return false;
