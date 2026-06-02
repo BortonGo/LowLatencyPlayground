@@ -1,11 +1,9 @@
 #include <iostream>
 #include <cstdint>
 #include <cstddef>
-#include <string_view>
 #include <thread>
 #include <vector>
 #include <chrono>
-#include "llp/latency_stats.hpp"
 #include "llp/spsc_queue.hpp"
 
 constexpr std::size_t message_count = 1'000'000;
@@ -37,13 +35,13 @@ void run() {
     llp::SPSCQueue<Message> q(buffer_capacity);
     auto start = std::chrono::steady_clock::now();
     std::thread t1([&]() {
-        for (int i = 0; i < message_count-1; ++i) {
+        for (std::size_t i = 0; i < message_count; ++i) {
             while (!q.push(input_buf[i])) {
             }
         }
     });
     std::thread t2([&]() {
-        for (int i = 0; i < message_count-1; ++i) {
+        for (std::size_t i = 0; i < message_count; ++i) {
             Message m{};
             while (!q.pop(m)) {
             }

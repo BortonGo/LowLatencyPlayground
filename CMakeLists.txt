@@ -128,6 +128,16 @@ add_executable(benchmark_spsc_queue
 target_include_directories(benchmark_spsc_queue PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
+target_link_libraries(benchmark_spsc_queue PRIVATE Threads::Threads)
+
+# ============ benchmark_spsc_latency_histogram ============
+add_executable(benchmark_spsc_latency_histogram
+        benchmarks/benchmark_spsc_latency_histogram.cpp
+)
+target_include_directories(benchmark_spsc_latency_histogram PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+target_link_libraries(benchmark_spsc_latency_histogram PRIVATE Threads::Threads)
 
 enable_testing()
 include(GoogleTest)

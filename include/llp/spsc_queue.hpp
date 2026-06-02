@@ -23,17 +23,19 @@ namespace llp {
             mask_ = capacity-1;
         }
         bool push(const T& value) {
-            if (full()) return false;
-            std::size_t idx = tail_.load(std::memory_order_acquire) & mask_;
-            storage_[idx] = value;
-            tail_.fetch_add(1,std::memory_order_release);
+            auto tail = tail_.load(std::memory_order_relaxed);
+            auto head = head_.load(std::memory_order_acquire);
+            if (tail - head == capacity()) return false;
+            storage_[tail & mask_] = value;
+            tail_.store(tail + 1,std::memory_order_release);
             return true;
         }
         bool pop(T& out) {
-            if (empty()) return false;
-            std::size_t idx = head_.load(std::memory_order_acquire) & mask_;
-            out = storage_[idx];
-            head_.fetch_add(1,std::memory_order_release);
+            auto tail = tail_.load(std::memory_order_acquire);
+            auto head = head_.load(std::memory_order_relaxed);
+            if (head == tail) return false;
+            out = storage_[head & mask_];
+            head_.store(head + 1,std::memory_order_release);
             return true;
         }
 
