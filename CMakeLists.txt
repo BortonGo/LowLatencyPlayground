@@ -152,6 +152,15 @@ target_include_directories(benchmark_atomic_counters PRIVATE
 )
 target_link_libraries(benchmark_atomic_counters PRIVATE Threads::Threads)
 
+# ============ benchmark_mutex_vs_spin_lock ============
+add_executable(benchmark_mutex_vs_spin_lock
+        benchmarks/benchmark_mutex_vs_spin_lock.cpp
+)
+target_include_directories(benchmark_mutex_vs_spin_lock PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+target_link_libraries(benchmark_mutex_vs_spin_lock PRIVATE Threads::Threads)
+
 enable_testing()
 include(GoogleTest)
 gtest_discover_tests(llp_tests)
