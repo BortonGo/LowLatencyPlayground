@@ -139,6 +139,15 @@ target_include_directories(benchmark_spsc_latency_histogram PRIVATE
 )
 target_link_libraries(benchmark_spsc_latency_histogram PRIVATE Threads::Threads)
 
+# ============ benchmark_atomic_counters ============
+add_executable(benchmark_atomic_counters
+        benchmarks/benchmark_atomic_counters.cpp
+)
+target_include_directories(benchmark_atomic_counters PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+target_link_libraries(benchmark_atomic_counters PRIVATE Threads::Threads)
+
 enable_testing()
 include(GoogleTest)
 gtest_discover_tests(llp_tests)

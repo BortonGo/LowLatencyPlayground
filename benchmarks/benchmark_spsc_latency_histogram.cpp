@@ -2,7 +2,6 @@
 #include <cstdint>
 #include <cstddef>
 #include <thread>
-#include <vector>
 #include <chrono>
 #include "llp/latency_stats.hpp"
 #include "llp/spsc_queue.hpp"
