@@ -12,7 +12,7 @@ counter.
 Рекомендуемый файл:
 
 ```text
-benchmarks/benchmark_atomic_counter.cpp
+benchmarks/stage_05_atomics_memory_model/benchmark_atomic_counters.cpp
 ```
 
 ## CMake
@@ -21,7 +21,7 @@ benchmarks/benchmark_atomic_counter.cpp
 
 ```cmake
 add_executable(benchmark_atomic_counter
-        benchmarks/benchmark_atomic_counter.cpp
+        benchmarks/stage_05_atomics_memory_model/benchmark_atomic_counters.cpp
 )
 
 target_link_libraries(benchmark_atomic_counter PRIVATE Threads::Threads)
@@ -108,7 +108,7 @@ counter.fetch_add(1, order);
 
 Пришли:
 
-- `benchmarks/benchmark_atomic_counter.cpp`;
+- `benchmarks/stage_05_atomics_memory_model/benchmark_atomic_counters.cpp`;
 - изменения в `CMakeLists.txt`;
 - вывод Release benchmark;
 - свое объяснение, почему multi-thread shared atomic стал медленнее.

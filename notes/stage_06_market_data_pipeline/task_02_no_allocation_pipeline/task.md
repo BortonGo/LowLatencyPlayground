@@ -17,7 +17,7 @@ binary bytes -> BinaryFeedParser -> SPSCQueue<MarketDataMessage> -> consumer
 ```text
 include/llp/market_data_pipeline.hpp
 tests/test_market_data_pipeline.cpp
-benchmarks/benchmark_market_data_pipeline.cpp
+benchmarks/stage_06_market_data_pipeline/benchmark_market_data_pipeline.cpp
 ```
 
 Можно использовать:
@@ -39,7 +39,7 @@ tests/test_market_data_pipeline.cpp
 
 ```cmake
 add_executable(benchmark_market_data_pipeline
-        benchmarks/benchmark_market_data_pipeline.cpp
+        benchmarks/stage_06_market_data_pipeline/benchmark_market_data_pipeline.cpp
 )
 
 target_include_directories(benchmark_market_data_pipeline PRIVATE
@@ -152,7 +152,7 @@ Stats в multi-thread pipeline могут потребовать atomics или 
 
 - `include/llp/market_data_pipeline.hpp`;
 - `tests/test_market_data_pipeline.cpp`;
-- `benchmarks/benchmark_market_data_pipeline.cpp`;
+- `benchmarks/stage_06_market_data_pipeline/benchmark_market_data_pipeline.cpp`;
 - изменения в `CMakeLists.txt`;
 - вывод `ctest`;
 - вывод Release benchmark;

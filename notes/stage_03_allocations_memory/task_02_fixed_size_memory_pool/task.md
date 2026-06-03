@@ -12,7 +12,7 @@
 Рекомендуемый файл:
 
 ```text
-benchmarks/benchmark_fixed_size_pool.cpp
+benchmarks/stage_03_allocations_memory/benchmark_fixed_pool.cpp
 ```
 
 ## CMake
@@ -21,7 +21,7 @@ benchmarks/benchmark_fixed_size_pool.cpp
 
 ```cmake
 add_executable(benchmark_fixed_size_pool
-        benchmarks/benchmark_fixed_size_pool.cpp
+        benchmarks/stage_03_allocations_memory/benchmark_fixed_pool.cpp
 )
 
 target_include_directories(benchmark_fixed_size_pool PRIVATE
@@ -308,7 +308,7 @@ batch_size: ...
 
 Пришли:
 
-- `benchmarks/benchmark_fixed_size_pool.cpp`;
+- `benchmarks/stage_03_allocations_memory/benchmark_fixed_pool.cpp`;
 - изменения в `CMakeLists.txt`;
 - пример output из Release build;
 - короткое объяснение результата своими словами.

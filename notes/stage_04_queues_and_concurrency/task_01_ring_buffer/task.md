@@ -15,7 +15,7 @@
 ```text
 include/llp/ring_buffer.hpp
 tests/test_ring_buffer.cpp
-benchmarks/benchmark_ring_buffer.cpp
+benchmarks/stage_04_queues_and_concurrency/benchmark_ring_buffer.cpp
 ```
 
 ## CMake
@@ -24,7 +24,7 @@ benchmarks/benchmark_ring_buffer.cpp
 
 ```cmake
 add_executable(benchmark_ring_buffer
-        benchmarks/benchmark_ring_buffer.cpp
+        benchmarks/stage_04_queues_and_concurrency/benchmark_ring_buffer.cpp
 )
 
 target_include_directories(benchmark_ring_buffer PRIVATE
@@ -223,7 +223,7 @@ checksum: ...
 
 - `include/llp/ring_buffer.hpp`;
 - `tests/test_ring_buffer.cpp`;
-- `benchmarks/benchmark_ring_buffer.cpp`;
+- `benchmarks/stage_04_queues_and_concurrency/benchmark_ring_buffer.cpp`;
 - изменения в `CMakeLists.txt`;
 - пример output из Release build;
 - короткое объяснение результата своими словами.

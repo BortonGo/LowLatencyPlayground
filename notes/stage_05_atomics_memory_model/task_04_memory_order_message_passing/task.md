@@ -18,7 +18,7 @@
 Рекомендуемые файлы:
 
 ```text
-benchmarks/benchmark_memory_order_message_passing.cpp
+benchmarks/stage_05_atomics_memory_model/benchmark_memory_order_message_passing.cpp
 ```
 
 ## CMake
@@ -27,7 +27,7 @@ benchmarks/benchmark_memory_order_message_passing.cpp
 
 ```cmake
 add_executable(benchmark_memory_order_message_passing
-        benchmarks/benchmark_memory_order_message_passing.cpp
+        benchmarks/stage_05_atomics_memory_model/benchmark_memory_order_message_passing.cpp
 )
 
 target_link_libraries(benchmark_memory_order_message_passing PRIVATE Threads::Threads)
@@ -138,7 +138,7 @@ sequence number. Но для первой версии `bool ready` проще.
 
 Пришли:
 
-- `benchmarks/benchmark_memory_order_message_passing.cpp`;
+- `benchmarks/stage_05_atomics_memory_model/benchmark_memory_order_message_passing.cpp`;
 - изменения в `CMakeLists.txt`;
 - вывод Release benchmark;
 - объяснение, почему `relaxed` тут не является корректной публикацией.

@@ -14,7 +14,7 @@
 include/llp/market_data_message.hpp
 include/llp/binary_feed_parser.hpp
 tests/test_binary_feed_parser.cpp
-benchmarks/benchmark_binary_feed_parser.cpp
+benchmarks/stage_06_market_data_pipeline/benchmark_binary_feed_parser.cpp
 ```
 
 ## CMake
@@ -29,7 +29,7 @@ tests/test_binary_feed_parser.cpp
 
 ```cmake
 add_executable(benchmark_binary_feed_parser
-        benchmarks/benchmark_binary_feed_parser.cpp
+        benchmarks/stage_06_market_data_pipeline/benchmark_binary_feed_parser.cpp
 )
 
 target_include_directories(benchmark_binary_feed_parser PRIVATE
@@ -155,7 +155,7 @@ std::uint32_t read_u32_le(const std::byte* p);
 - `include/llp/market_data_message.hpp`;
 - `include/llp/binary_feed_parser.hpp`;
 - `tests/test_binary_feed_parser.cpp`;
-- `benchmarks/benchmark_binary_feed_parser.cpp`;
+- `benchmarks/stage_06_market_data_pipeline/benchmark_binary_feed_parser.cpp`;
 - изменения в `CMakeLists.txt`;
 - вывод `ctest`;
 - вывод Release benchmark.

@@ -18,7 +18,7 @@ tight loop.
 Рекомендуемый файл:
 
 ```text
-benchmarks/branch_prediction_benchmark.cpp
+benchmarks/stage_02_cache_locality/branch_prediction_benchmark.cpp
 ```
 
 ## CMake
@@ -27,7 +27,7 @@ benchmarks/branch_prediction_benchmark.cpp
 
 ```cmake
 add_executable(branch_prediction_benchmark
-        benchmarks/branch_prediction_benchmark.cpp
+        benchmarks/stage_02_cache_locality/branch_prediction_benchmark.cpp
 )
 
 target_include_directories(branch_prediction_benchmark PRIVATE
@@ -155,7 +155,7 @@ branchless code иногда быстрее, иногда нет.
 
 Пришли:
 
-- `benchmarks/branch_prediction_benchmark.cpp`;
+- `benchmarks/stage_02_cache_locality/branch_prediction_benchmark.cpp`;
 - изменения в `CMakeLists.txt`;
 - пример вывода Release build;
 - короткое объяснение результата своими словами.

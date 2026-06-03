@@ -21,7 +21,7 @@
 ```text
 include/llp/spsc_queue.hpp
 tests/test_spsc_queue.cpp
-benchmarks/benchmark_spsc_queue.cpp
+benchmarks/stage_04_queues_and_concurrency/benchmark_spsc_queue.cpp
 ```
 
 ## CMake
@@ -36,7 +36,7 @@ tests/test_spsc_queue.cpp
 
 ```cmake
 add_executable(benchmark_spsc_queue
-        benchmarks/benchmark_spsc_queue.cpp
+        benchmarks/stage_04_queues_and_concurrency/benchmark_spsc_queue.cpp
 )
 
 target_include_directories(benchmark_spsc_queue PRIVATE
@@ -206,7 +206,7 @@ while (!queue.pop(value)) {
 
 - `include/llp/spsc_queue.hpp`;
 - `tests/test_spsc_queue.cpp`;
-- `benchmarks/benchmark_spsc_queue.cpp`;
+- `benchmarks/stage_04_queues_and_concurrency/benchmark_spsc_queue.cpp`;
 - изменения в `CMakeLists.txt`;
 - вывод `ctest`;
 - пример вывода Release benchmark.

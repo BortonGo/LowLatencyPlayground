@@ -17,7 +17,7 @@ low-latency code allocation стараются уносить из hot path.
 Рекомендуемый файл:
 
 ```text
-benchmarks/benchmark_new_delete_vs_reuse.cpp
+benchmarks/stage_03_allocations_memory/benchmark_new_delete_vs_reuse.cpp
 ```
 
 ## CMake
@@ -26,7 +26,7 @@ benchmarks/benchmark_new_delete_vs_reuse.cpp
 
 ```cmake
 add_executable(benchmark_new_delete_vs_reuse
-        benchmarks/benchmark_new_delete_vs_reuse.cpp
+        benchmarks/stage_03_allocations_memory/benchmark_new_delete_vs_reuse.cpp
 )
 
 target_include_directories(benchmark_new_delete_vs_reuse PRIVATE
@@ -168,7 +168,7 @@ void fill_message(Message& message, std::uint64_t sequence);
 
 Пришли:
 
-- `benchmarks/benchmark_new_delete_vs_reuse.cpp`;
+- `benchmarks/stage_03_allocations_memory/benchmark_new_delete_vs_reuse.cpp`;
 - изменения в `CMakeLists.txt`;
 - пример вывода Release build;
 - короткое объяснение результата.

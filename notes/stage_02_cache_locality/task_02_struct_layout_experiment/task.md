@@ -20,7 +20,7 @@
 Рекомендуемый файл:
 
 ```text
-benchmarks/struct_layout_experiment.cpp
+benchmarks/stage_02_cache_locality/struct_layout_experiment.cpp
 ```
 
 ## CMake
@@ -29,7 +29,7 @@ benchmarks/struct_layout_experiment.cpp
 
 ```cmake
 add_executable(struct_layout_experiment
-        benchmarks/struct_layout_experiment.cpp
+        benchmarks/stage_02_cache_locality/struct_layout_experiment.cpp
 )
 
 target_include_directories(struct_layout_experiment PRIVATE
@@ -199,7 +199,7 @@ sizeof(T) * record_count
 
 Пришли:
 
-- `benchmarks/struct_layout_experiment.cpp`;
+- `benchmarks/stage_02_cache_locality/struct_layout_experiment.cpp`;
 - изменения в `CMakeLists.txt`;
 - пример вывода Release build;
 - короткое объяснение, где compiler добавил padding и почему.

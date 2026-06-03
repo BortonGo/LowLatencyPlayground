@@ -18,7 +18,7 @@ cache coherence traffic.
 Рекомендуемый файл:
 
 ```text
-benchmarks/false_sharing_demo.cpp
+benchmarks/stage_02_cache_locality/false_sharing_demo.cpp
 ```
 
 ## CMake
@@ -27,7 +27,7 @@ benchmarks/false_sharing_demo.cpp
 
 ```cmake
 add_executable(false_sharing_demo
-        benchmarks/false_sharing_demo.cpp
+        benchmarks/stage_02_cache_locality/false_sharing_demo.cpp
 )
 
 target_include_directories(false_sharing_demo PRIVATE
@@ -187,7 +187,7 @@ struct RunResult {
 
 Пришли:
 
-- `benchmarks/false_sharing_demo.cpp`;
+- `benchmarks/stage_02_cache_locality/false_sharing_demo.cpp`;
 - изменения в `CMakeLists.txt`;
 - пример вывода из Release build;
 - короткое объяснение своими словами, почему padded быстрее или почему разница

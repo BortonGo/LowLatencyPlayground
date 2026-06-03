@@ -13,7 +13,7 @@ pointer chasing.
 Рекомендуемый файл:
 
 ```text
-benchmarks/benchmark_list_vs_vector.cpp
+benchmarks/stage_01_measurement_basics/benchmark_list_vs_vector.cpp
 ```
 
 ## CMake
@@ -22,7 +22,7 @@ benchmarks/benchmark_list_vs_vector.cpp
 
 ```cmake
 add_executable(benchmark_list_vs_vector
-        benchmarks/benchmark_list_vs_vector.cpp
+        benchmarks/stage_01_measurement_basics/benchmark_list_vs_vector.cpp
 )
 
 target_include_directories(benchmark_list_vs_vector PRIVATE
@@ -168,7 +168,7 @@ struct BenchmarkResult {
 
 Пришли:
 
-- `benchmarks/benchmark_list_vs_vector.cpp`;
+- `benchmarks/stage_01_measurement_basics/benchmark_list_vs_vector.cpp`;
 - изменения в `CMakeLists.txt`;
 - пример вывода из Release build;
 - короткое объяснение своими словами, почему результаты такие.

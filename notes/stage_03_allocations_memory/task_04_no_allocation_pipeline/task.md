@@ -19,7 +19,7 @@
 Рекомендуемый файл:
 
 ```text
-benchmarks/benchmark_no_allocation_pipeline.cpp
+benchmarks/stage_03_allocations_memory/benchmark_no_allocation_pipeline.cpp
 ```
 
 ## CMake
@@ -28,7 +28,7 @@ benchmarks/benchmark_no_allocation_pipeline.cpp
 
 ```cmake
 add_executable(benchmark_no_allocation_pipeline
-        benchmarks/benchmark_no_allocation_pipeline.cpp
+        benchmarks/stage_03_allocations_memory/benchmark_no_allocation_pipeline.cpp
 )
 
 target_include_directories(benchmark_no_allocation_pipeline PRIVATE
@@ -188,7 +188,7 @@ checksum += event.notional;
 
 Пришли:
 
-- `benchmarks/benchmark_no_allocation_pipeline.cpp`;
+- `benchmarks/stage_03_allocations_memory/benchmark_no_allocation_pipeline.cpp`;
 - изменения в `CMakeLists.txt`;
 - пример вывода Release build;
 - короткое объяснение результата.

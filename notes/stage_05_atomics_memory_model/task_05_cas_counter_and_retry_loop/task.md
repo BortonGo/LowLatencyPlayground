@@ -15,7 +15,7 @@
 Рекомендуемый файл:
 
 ```text
-benchmarks/benchmark_cas_counter.cpp
+benchmarks/stage_05_atomics_memory_model/benchmark_cas_counter.cpp
 ```
 
 ## CMake
@@ -24,7 +24,7 @@ benchmarks/benchmark_cas_counter.cpp
 
 ```cmake
 add_executable(benchmark_cas_counter
-        benchmarks/benchmark_cas_counter.cpp
+        benchmarks/stage_05_atomics_memory_model/benchmark_cas_counter.cpp
 )
 
 target_link_libraries(benchmark_cas_counter PRIVATE Threads::Threads)
@@ -99,7 +99,7 @@ while (!counter.compare_exchange_weak(
 
 Пришли:
 
-- `benchmarks/benchmark_cas_counter.cpp`;
+- `benchmarks/stage_05_atomics_memory_model/benchmark_cas_counter.cpp`;
 - изменения в `CMakeLists.txt`;
 - вывод Release benchmark;
 - объяснение, что происходит с failed attempts при 2 и 4 threads.

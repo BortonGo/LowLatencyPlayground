@@ -12,7 +12,7 @@ critical section.
 Рекомендуемый файл:
 
 ```text
-benchmarks/benchmark_mutex_vs_spinlock.cpp
+benchmarks/stage_05_atomics_memory_model/benchmark_mutex_vs_spin_lock.cpp
 ```
 
 ## CMake
@@ -21,7 +21,7 @@ benchmarks/benchmark_mutex_vs_spinlock.cpp
 
 ```cmake
 add_executable(benchmark_mutex_vs_spinlock
-        benchmarks/benchmark_mutex_vs_spinlock.cpp
+        benchmarks/stage_05_atomics_memory_model/benchmark_mutex_vs_spin_lock.cpp
 )
 
 target_include_directories(benchmark_mutex_vs_spinlock PRIVATE
@@ -106,7 +106,7 @@ lock.
 
 Пришли:
 
-- `benchmarks/benchmark_mutex_vs_spinlock.cpp`;
+- `benchmarks/stage_05_atomics_memory_model/benchmark_mutex_vs_spin_lock.cpp`;
 - изменения в `CMakeLists.txt`;
 - вывод Release benchmark;
 - короткий вывод своими словами.

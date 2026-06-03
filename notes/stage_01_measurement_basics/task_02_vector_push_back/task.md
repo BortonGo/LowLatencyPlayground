@@ -16,7 +16,7 @@
 Рекомендуемые файлы:
 
 ```text
-benchmarks/benchmark_vector_push_back.cpp
+benchmarks/stage_01_measurement_basics/benchmark_vector_push_back.cpp
 ```
 
 Если понадобится helper для печати stats, можно сделать небольшой local function
@@ -28,7 +28,7 @@ benchmarks/benchmark_vector_push_back.cpp
 
 ```cmake
 add_executable(benchmark_vector_push_back
-        benchmarks/benchmark_vector_push_back.cpp
+        benchmarks/stage_01_measurement_basics/benchmark_vector_push_back.cpp
 )
 
 target_include_directories(benchmark_vector_push_back PRIVATE
@@ -178,7 +178,7 @@ benchmark сейчас полезнее, чем слишком общий benchm
 
 Пришли:
 
-- `benchmarks/benchmark_vector_push_back.cpp`;
+- `benchmarks/stage_01_measurement_basics/benchmark_vector_push_back.cpp`;
 - изменения в `CMakeLists.txt`;
 - пример вывода benchmark в Debug или Release.
 

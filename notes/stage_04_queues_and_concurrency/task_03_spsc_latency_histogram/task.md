@@ -17,7 +17,7 @@
 Рекомендуемый файл:
 
 ```text
-benchmarks/benchmark_spsc_latency_histogram.cpp
+benchmarks/stage_04_queues_and_concurrency/benchmark_spsc_latency_histogram.cpp
 ```
 
 ## CMake
@@ -26,7 +26,7 @@ benchmarks/benchmark_spsc_latency_histogram.cpp
 
 ```cmake
 add_executable(benchmark_spsc_latency_histogram
-        benchmarks/benchmark_spsc_latency_histogram.cpp
+        benchmarks/stage_04_queues_and_concurrency/benchmark_spsc_latency_histogram.cpp
 )
 
 target_include_directories(benchmark_spsc_latency_histogram PRIVATE
@@ -114,7 +114,7 @@ while (!queue.push(msg)) {
 
 Пришли:
 
-- `benchmarks/benchmark_spsc_latency_histogram.cpp`;
+- `benchmarks/stage_04_queues_and_concurrency/benchmark_spsc_latency_histogram.cpp`;
 - изменения в `CMakeLists.txt`;
 - вывод Release benchmark;
 - короткое объяснение, что показывает p99.

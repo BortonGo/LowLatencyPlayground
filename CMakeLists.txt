@@ -35,131 +35,63 @@ target_include_directories(llp_tests PRIVATE
 )
 target_link_libraries(llp_tests PRIVATE
         GTest::gtest_main
-)
-target_link_libraries(llp_tests PRIVATE Threads::Threads)
-
-# ============ benchmark_vector_push_back ============
-add_executable(benchmark_vector_push_back
-        benchmarks/benchmark_vector_push_back.cpp
-)
-target_include_directories(benchmark_vector_push_back PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
+        Threads::Threads
 )
 
-# ============ benchmark_list_vs_vector ============
-add_executable(benchmark_list_vs_vector
-        benchmarks/benchmark_list_vs_vector.cpp
-)
-target_include_directories(benchmark_list_vs_vector PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
+function(add_llp_benchmark target source)
+    add_executable(${target} ${source})
+    target_include_directories(${target} PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/include
+    )
+    if (ARGN)
+        target_link_libraries(${target} PRIVATE ${ARGN})
+    endif()
+endfunction()
 
-# ============ false_sharing_demo ============
-add_executable(false_sharing_demo
-        benchmarks/false_sharing_demo.cpp
-)
+# ============ Stage 1. Measurement Basics ============
+add_llp_benchmark(benchmark_vector_push_back
+        benchmarks/stage_01_measurement_basics/benchmark_vector_push_back.cpp)
+add_llp_benchmark(benchmark_list_vs_vector
+        benchmarks/stage_01_measurement_basics/benchmark_list_vs_vector.cpp)
 
-target_link_libraries(false_sharing_demo PRIVATE Threads::Threads)
+# ============ Stage 2. Cache Locality ============
+add_llp_benchmark(false_sharing_demo
+        benchmarks/stage_02_cache_locality/false_sharing_demo.cpp
+        Threads::Threads)
+add_llp_benchmark(struct_layout_experiment
+        benchmarks/stage_02_cache_locality/struct_layout_experiment.cpp)
+add_llp_benchmark(aos_vs_soa_benchmark
+        benchmarks/stage_02_cache_locality/aos_vs_soa_benchmark.cpp)
+add_llp_benchmark(branch_prediction_benchmark
+        benchmarks/stage_02_cache_locality/branch_prediction_benchmark.cpp)
 
-# ============ struct_layout_experiment ============
-add_executable(struct_layout_experiment
-        benchmarks/struct_layout_experiment.cpp
-)
-target_include_directories(struct_layout_experiment PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
+# ============ Stage 3. Allocations And Memory ============
+add_llp_benchmark(benchmark_new_delete_vs_reuse
+        benchmarks/stage_03_allocations_memory/benchmark_new_delete_vs_reuse.cpp)
+add_llp_benchmark(benchmark_fixed_pool
+        benchmarks/stage_03_allocations_memory/benchmark_fixed_pool.cpp)
+add_llp_benchmark(benchmark_object_pool
+        benchmarks/stage_03_allocations_memory/benchmark_object_pool.cpp)
+add_llp_benchmark(benchmark_no_allocation_pipeline
+        benchmarks/stage_03_allocations_memory/benchmark_no_allocation_pipeline.cpp)
 
-# ============ aos_vs_soa_benchmark ============
-add_executable(aos_vs_soa_benchmark
-        benchmarks/aos_vs_soa_benchmark.cpp
-)
-target_include_directories(aos_vs_soa_benchmark PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
+# ============ Stage 4. Queues And Concurrency ============
+add_llp_benchmark(benchmark_ring_buffer
+        benchmarks/stage_04_queues_and_concurrency/benchmark_ring_buffer.cpp)
+add_llp_benchmark(benchmark_spsc_queue
+        benchmarks/stage_04_queues_and_concurrency/benchmark_spsc_queue.cpp
+        Threads::Threads)
+add_llp_benchmark(benchmark_spsc_latency_histogram
+        benchmarks/stage_04_queues_and_concurrency/benchmark_spsc_latency_histogram.cpp
+        Threads::Threads)
 
-# ============ branch_prediction_benchmark ============
-add_executable(branch_prediction_benchmark
-        benchmarks/branch_prediction_benchmark.cpp
-)
-target_include_directories(branch_prediction_benchmark PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
-
-# ============ benchmark_new_delete_vs_reuse ============
-add_executable(benchmark_new_delete_vs_reuse
-        benchmarks/benchmark_new_delete_vs_reuse.cpp
-)
-target_include_directories(benchmark_new_delete_vs_reuse PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
-
-# ============ benchmark_fixed_pool ============
-add_executable(benchmark_fixed_pool
-        benchmarks/benchmark_fixed_pool.cpp
-)
-target_include_directories(benchmark_fixed_pool PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
-
-# ============ benchmark_object_pool ============
-add_executable(benchmark_object_pool
-        benchmarks/benchmark_object_pool.cpp
-)
-target_include_directories(benchmark_object_pool PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
-
-# ============ benchmark_no_allocation_pipeline ============
-add_executable(benchmark_no_allocation_pipeline
-        benchmarks/benchmark_no_allocation_pipeline.cpp
-)
-target_include_directories(benchmark_no_allocation_pipeline PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
-
-# ============ benchmark_ring_buffer ============
-add_executable(benchmark_ring_buffer
-        benchmarks/benchmark_ring_buffer.cpp
-)
-target_include_directories(benchmark_ring_buffer PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
-
-# ============ benchmark_spsc_queue ============
-add_executable(benchmark_spsc_queue
-        benchmarks/benchmark_spsc_queue.cpp
-)
-target_include_directories(benchmark_spsc_queue PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
-target_link_libraries(benchmark_spsc_queue PRIVATE Threads::Threads)
-
-# ============ benchmark_spsc_latency_histogram ============
-add_executable(benchmark_spsc_latency_histogram
-        benchmarks/benchmark_spsc_latency_histogram.cpp
-)
-target_include_directories(benchmark_spsc_latency_histogram PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
-target_link_libraries(benchmark_spsc_latency_histogram PRIVATE Threads::Threads)
-
-# ============ benchmark_atomic_counters ============
-add_executable(benchmark_atomic_counters
-        benchmarks/benchmark_atomic_counters.cpp
-)
-target_include_directories(benchmark_atomic_counters PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
-target_link_libraries(benchmark_atomic_counters PRIVATE Threads::Threads)
-
-# ============ benchmark_mutex_vs_spin_lock ============
-add_executable(benchmark_mutex_vs_spin_lock
-        benchmarks/benchmark_mutex_vs_spin_lock.cpp
-)
-target_include_directories(benchmark_mutex_vs_spin_lock PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
-target_link_libraries(benchmark_mutex_vs_spin_lock PRIVATE Threads::Threads)
+# ============ Stage 5. Atomics And Memory Model ============
+add_llp_benchmark(benchmark_atomic_counters
+        benchmarks/stage_05_atomics_memory_model/benchmark_atomic_counters.cpp
+        Threads::Threads)
+add_llp_benchmark(benchmark_mutex_vs_spin_lock
+        benchmarks/stage_05_atomics_memory_model/benchmark_mutex_vs_spin_lock.cpp
+        Threads::Threads)
 
 enable_testing()
 include(GoogleTest)

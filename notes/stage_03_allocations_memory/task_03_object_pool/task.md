@@ -20,7 +20,7 @@
 ```text
 include/llp/object_pool.hpp
 tests/test_object_pool.cpp
-benchmarks/benchmark_object_pool.cpp
+benchmarks/stage_03_allocations_memory/benchmark_object_pool.cpp
 ```
 
 ## CMake
@@ -39,7 +39,7 @@ add_executable(llp_tests
 
 ```cmake
 add_executable(benchmark_object_pool
-        benchmarks/benchmark_object_pool.cpp
+        benchmarks/stage_03_allocations_memory/benchmark_object_pool.cpp
 )
 
 target_include_directories(benchmark_object_pool PRIVATE
@@ -233,7 +233,7 @@ if (object < begin || object >= end) {
 
 - `include/llp/object_pool.hpp`;
 - `tests/test_object_pool.cpp`;
-- `benchmarks/benchmark_object_pool.cpp`;
+- `benchmarks/stage_03_allocations_memory/benchmark_object_pool.cpp`;
 - изменения в `CMakeLists.txt`;
 - вывод `ctest`;
 - пример вывода benchmark Release build.
