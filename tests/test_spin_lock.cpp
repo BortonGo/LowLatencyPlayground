@@ -1,5 +1,5 @@
 #include <llp/spin_lock.hpp>
-#include <utility>
+#include <vector>
 #include <thread>
 #include <cstddef>
 #include "gtest/gtest.h"

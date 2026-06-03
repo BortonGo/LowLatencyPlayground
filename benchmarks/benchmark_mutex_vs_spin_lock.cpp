@@ -9,22 +9,24 @@
 #include <string_view>
 #include <llp/spin_lock.hpp>
 
-constexpr std::size_t iteration_per_thread = 100'000'000;
+constexpr std::size_t iteration_per_thread = 1'000'000;
 
 void printStats(std::string_view name, std::chrono::time_point<std::chrono::steady_clock> START,
-    std::chrono::time_point<std::chrono::steady_clock> END, std::uint64_t cnt) {
+    std::chrono::time_point<std::chrono::steady_clock> END, std::uint64_t cnt, std::uint64_t checksum, std::size_t oper_cnt) {
     const auto elapsed = END - START;
     const double elapsed_seconds = std::chrono::duration<double>(elapsed).count();
-    const double throughput = static_cast<double>(iteration_per_thread)/elapsed_seconds;
+    const double throughput = static_cast<double>(oper_cnt)/elapsed_seconds;
     std::cout << name << '\n';
     std::cout << "counter = " << cnt << '\n';
-    std::cout << "elapsed(ms) = " << std::chrono::duration_cast<std::chrono::milliseconds>(elapsed) << '\n';
+    std::cout << "checksum = " << checksum << '\n';
+    std::cout << "elapsed(mcs) = " << std::chrono::duration_cast<std::chrono::microseconds>(elapsed) << '\n';
     std::cout << "throughput(ops/sec) = " << throughput << '\n';
 }
 
 
 void run_case_mutex(std::string_view name, std::size_t cnt_threads, bool long_work) {
     std::uint64_t cnt = 0;
+    std::uint64_t checksum = 0;
     std::mutex m;
     std::vector<std::thread> workers;
     workers.reserve(cnt_threads);
@@ -34,9 +36,12 @@ void run_case_mutex(std::string_view name, std::size_t cnt_threads, bool long_wo
             std::thread t([&]() {
                 for (std::size_t j = 0; j < iteration_per_thread; ++j) {
                     std::lock_guard<std::mutex> lck(m);
+                    std::size_t local_cnt = 0;
                     for (std::size_t k = 0; k < 100; ++k) {
-                        if (k % 2 == 0) ++cnt;
+                        if (k % 2 == 0) ++local_cnt;
                     }
+                    ++cnt;
+                    checksum += local_cnt;
                 }
             });
             workers.push_back(std::move(t));
@@ -46,6 +51,7 @@ void run_case_mutex(std::string_view name, std::size_t cnt_threads, bool long_wo
             std::thread t([&]() {
                 for (std::size_t j = 0; j < iteration_per_thread; ++j) {
                     std::lock_guard<std::mutex> lck(m);
+                    ++checksum;
                     ++cnt;
                 }
             });
@@ -56,11 +62,12 @@ void run_case_mutex(std::string_view name, std::size_t cnt_threads, bool long_wo
         workers[i].join();
     }
     const auto END = std::chrono::steady_clock::now();
-    printStats(name, START, END, cnt);
+    printStats(name, START, END, cnt, checksum, cnt_threads * iteration_per_thread);
 }
 
 void run_case_spin_lock(std::string_view name, std::size_t cnt_threads, bool long_work) {
     std::uint64_t cnt = 0;
+    std::uint64_t checksum = 0;
     llp::SpinLock lock;
     std::vector<std::thread> workers;
     workers.reserve(cnt_threads);
@@ -70,9 +77,12 @@ void run_case_spin_lock(std::string_view name, std::size_t cnt_threads, bool lon
             std::thread t([&]() {
                 for (std::size_t j = 0; j < iteration_per_thread; ++j) {
                     lock.lock();
+                    std::size_t local_cnt = 0;
                     for (std::size_t k = 0; k < 100; ++k) {
-                        if (k % 2 == 0) ++cnt;
+                        if (k % 2 == 0) ++local_cnt;
                     }
+                    ++cnt;
+                    checksum += local_cnt;
                     lock.unlock();
                 }
             });
@@ -84,6 +94,7 @@ void run_case_spin_lock(std::string_view name, std::size_t cnt_threads, bool lon
                 for (std::size_t j = 0; j < iteration_per_thread; ++j) {
                     lock.lock();
                     ++cnt;
+                    ++checksum;
                     lock.unlock();
                 }
             });
@@ -94,7 +105,7 @@ void run_case_spin_lock(std::string_view name, std::size_t cnt_threads, bool lon
         workers[i].join();
     }
     const auto END = std::chrono::steady_clock::now();
-    printStats(name, START, END, cnt);
+    printStats(name, START, END, cnt, checksum, cnt_threads * iteration_per_thread);
 }
 
 void printModulo() {

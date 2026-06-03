@@ -11,10 +11,10 @@
 constexpr std::size_t iteration_per_thread = 100'000'000;
 
 void printStats(std::string_view name, std::chrono::time_point<std::chrono::steady_clock> START,
-    std::chrono::time_point<std::chrono::steady_clock> END, std::uint64_t cnt) {
+    std::chrono::time_point<std::chrono::steady_clock> END, std::uint64_t cnt, std::size_t oper_cnt) {
     const auto elapsed = END - START;
     const double elapsed_seconds = std::chrono::duration<double>(elapsed).count();
-    const double throughput = static_cast<double>(iteration_per_thread)/elapsed_seconds;
+    const double throughput = static_cast<double>(oper_cnt)/elapsed_seconds;
     std::cout << name << '\n';
     std::cout << "counter = " << cnt << '\n';
     std::cout << "elapsed(ns) = " << std::chrono::duration_cast<std::chrono::nanoseconds>(elapsed) << '\n';
@@ -22,13 +22,13 @@ void printStats(std::string_view name, std::chrono::time_point<std::chrono::stea
 }
 
 void run_single_thread_cnt(std::string_view name) {
-    std::uint64_t cnt = 0;
+    volatile std::uint64_t cnt = 0;
     const auto START = std::chrono::steady_clock::now();
     for (std::size_t i = 0; i < iteration_per_thread; ++i) {
-        ++cnt;
+        cnt = cnt + 1;
     }
     const auto END = std::chrono::steady_clock::now();
-    printStats(name, START, END, cnt);
+    printStats(name, START, END, cnt, iteration_per_thread);
 }
 
 void run_single_thread_atomic_cnt(std::string_view name, std::memory_order order) {
@@ -39,7 +39,7 @@ void run_single_thread_atomic_cnt(std::string_view name, std::memory_order order
     }
     const auto END = std::chrono::steady_clock::now();
     const auto counter = cnt.load();
-    printStats(name, START, END, counter);
+    printStats(name, START, END, counter, iteration_per_thread);
 }
 
 void shared_atomic_cnt(std::string_view name, std::size_t cnt_threads, std::memory_order order) {
@@ -60,7 +60,7 @@ void shared_atomic_cnt(std::string_view name, std::size_t cnt_threads, std::memo
     }
     const auto END = std::chrono::steady_clock::now();
     const auto counter = cnt.load();
-    printStats(name, START, END, counter);
+    printStats(name, START, END, counter, cnt_threads * iteration_per_thread);
 }
 
 void printModulo() {
