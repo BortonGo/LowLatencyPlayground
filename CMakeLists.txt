@@ -9,6 +9,7 @@ add_executable(LowLatencyPlayground main.cpp
         include/llp/object_pool.hpp
         include/llp/ring_buffer.hpp
         include/llp/spsc_queue.hpp
+        include/llp/spin_lock.hpp
 )
 target_include_directories(LowLatencyPlayground PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}
@@ -18,6 +19,7 @@ target_include_directories(LowLatencyPlayground PRIVATE
 )
 
 find_package(GTest CONFIG REQUIRED)
+find_package(Threads REQUIRED)
 
 # ============ TESTS ============
 add_executable(llp_tests
@@ -26,6 +28,7 @@ add_executable(llp_tests
         tests/test_object_pool.cpp
         tests/test_ring_buffer.cpp
         tests/test_spsc_queue.cpp
+        tests/test_spin_lock.cpp
 )
 target_include_directories(llp_tests PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -33,6 +36,7 @@ target_include_directories(llp_tests PRIVATE
 target_link_libraries(llp_tests PRIVATE
         GTest::gtest_main
 )
+target_link_libraries(llp_tests PRIVATE Threads::Threads)
 
 # ============ benchmark_vector_push_back ============
 add_executable(benchmark_vector_push_back
@@ -54,7 +58,7 @@ target_include_directories(benchmark_list_vs_vector PRIVATE
 add_executable(false_sharing_demo
         benchmarks/false_sharing_demo.cpp
 )
-find_package(Threads REQUIRED)
+
 target_link_libraries(false_sharing_demo PRIVATE Threads::Threads)
 
 # ============ struct_layout_experiment ============
