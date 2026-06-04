@@ -32,6 +32,7 @@ add_executable(llp_tests
         tests/test_spsc_queue.cpp
         tests/test_spin_lock.cpp
         tests/test_binary_feed_parser.cpp
+        tests/test_market_data_pipeline.cpp
 )
 target_include_directories(llp_tests PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -105,6 +106,9 @@ add_llp_benchmark(benchmark_cas_counter
 # ============ Stage 6. Market Data Pipeline ============
 add_llp_benchmark(benchmark_binary_feed_parser
         benchmarks/stage_06_market_data_pipeline/benchmark_binary_feed_parser.cpp)
+add_llp_benchmark(benchmark_market_data_pipeline
+        benchmarks/stage_06_market_data_pipeline/benchmark_market_data_pipeline.cpp
+        Threads::Threads)
 
 enable_testing()
 include(GoogleTest)
