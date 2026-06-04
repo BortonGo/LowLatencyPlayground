@@ -10,6 +10,8 @@ add_executable(LowLatencyPlayground main.cpp
         include/llp/ring_buffer.hpp
         include/llp/spsc_queue.hpp
         include/llp/spin_lock.hpp
+        include/llp/market_data_message.hpp
+        include/llp/binary_feed_parser.hpp
 )
 target_include_directories(LowLatencyPlayground PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}
@@ -29,6 +31,7 @@ add_executable(llp_tests
         tests/test_ring_buffer.cpp
         tests/test_spsc_queue.cpp
         tests/test_spin_lock.cpp
+        tests/test_binary_feed_parser.cpp
 )
 target_include_directories(llp_tests PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -98,6 +101,10 @@ add_llp_benchmark(benchmark_memory_order_message_passing
 add_llp_benchmark(benchmark_cas_counter
         benchmarks/stage_05_atomics_memory_model/benchmark_cas_counter.cpp
         Threads::Threads)
+
+# ============ Stage 6. Market Data Pipeline ============
+add_llp_benchmark(benchmark_binary_feed_parser
+        benchmarks/stage_06_market_data_pipeline/benchmark_binary_feed_parser.cpp)
 
 enable_testing()
 include(GoogleTest)
