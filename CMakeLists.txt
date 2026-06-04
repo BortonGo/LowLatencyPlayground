@@ -92,6 +92,12 @@ add_llp_benchmark(benchmark_atomic_counters
 add_llp_benchmark(benchmark_mutex_vs_spin_lock
         benchmarks/stage_05_atomics_memory_model/benchmark_mutex_vs_spin_lock.cpp
         Threads::Threads)
+add_llp_benchmark(benchmark_memory_order_message_passing
+        benchmarks/stage_05_atomics_memory_model/benchmark_memory_order_message_passing.cpp
+        Threads::Threads)
+add_llp_benchmark(benchmark_cas_counter
+        benchmarks/stage_05_atomics_memory_model/benchmark_cas_counter.cpp
+        Threads::Threads)
 
 enable_testing()
 include(GoogleTest)
