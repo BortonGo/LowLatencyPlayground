@@ -15,10 +15,10 @@ namespace llp {
 
     // Special bad structure
     struct MarketDataMessage {
-        MessageType type;
-        std::uint32_t symbol_id;
         std::uint64_t price;
+        std::uint32_t symbol_id;
         std::uint32_t quantity;
+        MessageType type;
         Side side;
     };
 }

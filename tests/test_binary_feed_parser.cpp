@@ -63,6 +63,8 @@ TEST(BinaryFeedParser, BadSide) {
     buffer[17] = static_cast<std::byte>(side);
 
     llp::MarketDataMessage out{};
+    out.price = 999;
     llp::BinaryFeedParser parser;
     EXPECT_EQ(parser.parse(&buffer[0], 18, out), false);
+    EXPECT_EQ(out.price, 999);
 }
