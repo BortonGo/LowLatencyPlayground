@@ -12,6 +12,8 @@ add_executable(LowLatencyPlayground main.cpp
         include/llp/spin_lock.hpp
         include/llp/market_data_message.hpp
         include/llp/binary_feed_parser.hpp
+        include/llp/market_data_pipeline.hpp
+        include/llp/order_book.hpp
 )
 target_include_directories(LowLatencyPlayground PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}
@@ -33,6 +35,7 @@ add_executable(llp_tests
         tests/test_spin_lock.cpp
         tests/test_binary_feed_parser.cpp
         tests/test_market_data_pipeline.cpp
+        tests/test_order_book.cpp
 )
 target_include_directories(llp_tests PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -109,6 +112,8 @@ add_llp_benchmark(benchmark_binary_feed_parser
 add_llp_benchmark(benchmark_market_data_pipeline
         benchmarks/stage_06_market_data_pipeline/benchmark_market_data_pipeline.cpp
         Threads::Threads)
+add_llp_benchmark(benchmark_order_book
+        benchmarks/stage_06_market_data_pipeline/benchmark_order_book.cpp)
 
 enable_testing()
 include(GoogleTest)
