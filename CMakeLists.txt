@@ -114,6 +114,9 @@ add_llp_benchmark(benchmark_market_data_pipeline
         Threads::Threads)
 add_llp_benchmark(benchmark_order_book
         benchmarks/stage_06_market_data_pipeline/benchmark_order_book.cpp)
+add_llp_benchmark(benchmark_pipeline_batching
+        benchmarks/stage_06_market_data_pipeline/benchmark_pipeline_batching.cpp
+        Threads::Threads)
 
 enable_testing()
 include(GoogleTest)
