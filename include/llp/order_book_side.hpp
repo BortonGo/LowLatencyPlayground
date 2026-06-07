@@ -50,11 +50,31 @@ namespace llp {
             return levels_.size();
         }
 
+        Order* best_order() noexcept {
+            if (levels_.empty()) return nullptr;
+            auto& orders = levels_.begin()->second;
+            if (orders.empty()) return nullptr;
+            return &orders.front();
+        }
+
         const Order* best_order() const noexcept {
             if (levels_.empty()) return nullptr;
             const auto& orders = levels_.begin()->second;
             if (orders.empty()) return nullptr;
             return &orders.front();
+        }
+
+        void pop_best() {
+            if (levels_.empty()) return;
+            auto& orders = levels_.begin()->second;
+            if (orders.empty()) return;
+
+            --order_count_;
+            orders.pop_front();
+
+            if (orders.empty()) {
+                levels_.erase(levels_.begin());
+            }
         }
     };
 }
