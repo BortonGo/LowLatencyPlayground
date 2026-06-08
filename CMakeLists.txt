@@ -17,6 +17,7 @@ add_executable(LowLatencyPlayground main.cpp
         include/llp/order.hpp
         include/llp/order_book_side.hpp
         include/llp/matching_engine.hpp
+        include/llp/trade_buffer.hpp
 )
 target_include_directories(LowLatencyPlayground PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}
@@ -41,6 +42,7 @@ add_executable(llp_tests
         tests/test_order_book.cpp
         tests/test_order_book_side.cpp
         tests/test_matching_engine.cpp
+        tests/test_trade_buffer.cpp
 )
 target_include_directories(llp_tests PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -126,6 +128,8 @@ add_llp_benchmark(benchmark_pipeline_batching
 # ============ Stage 7. Matching Engine ============
 add_llp_benchmark(benchmark_matching_engine
         benchmarks/stage_07_matching_engine/benchmark_matching_engine.cpp)
+add_llp_benchmark(benchmark_vector_vs_trade_buffer
+        benchmarks/stage_07_matching_engine/benchmark_vector_vs_trade_buffer.cpp)
 
 enable_testing()
 include(GoogleTest)
