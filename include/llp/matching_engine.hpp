@@ -81,6 +81,12 @@ namespace llp {
             return false;
         }
 
+        bool old_cancel(std::uint64_t order_id) {
+            if (buy.old_cancel(order_id)) return true;
+            if (sell.old_cancel(order_id)) return true;
+            return false;
+        }
+
         const Order* best_bid() const noexcept {
             return buy.best_order();
         }

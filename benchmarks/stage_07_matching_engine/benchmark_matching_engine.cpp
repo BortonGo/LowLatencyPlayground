@@ -46,9 +46,9 @@ void printStats(std::string_view name, std::chrono::time_point<std::chrono::stea
     const double elapsed_seconds = std::chrono::duration<double>(elapsed).count();
     const double throughput = static_cast<double>(oper_cnt)/elapsed_seconds;
     std::cout << name << '\n';
-    std::cout << "consumer checksum = " << checksum << '\n';
-    std::cout << "elapsed(us) = " << std::chrono::duration_cast<std::chrono::microseconds>(elapsed) << '\n';
-    std::cout << "throughput(ops/sec) = " << throughput << '\n';
+    std::cout << "checksum = " << checksum << '\n';
+    std::cout << "elapsed_us = " << std::chrono::duration_cast<std::chrono::microseconds>(elapsed) << '\n';
+    std::cout << "throughput_ops_sec = " << throughput << '\n';
 }
 
 void run_add_resting_only(std::string_view name) {
@@ -111,6 +111,27 @@ void run_cancel_resting_only(std::string_view name) {
     printStats(name, start, end, checksum, orders.resting.size());
 }
 
+void run_old_cancel_resting_only(std::string_view name) {
+    auto orders = generate_resting_asks_and_crossing_buys(orders_cnt);
+    llp::MatchingEngine engine;
+    std::vector<llp::Trade> trades;
+    trades.reserve(orders_cnt);
+    for (const auto& order : orders.resting) {
+        engine.add(order, trades);
+    }
+    std::uint64_t checksum = 0;
+
+    const auto start = std::chrono::steady_clock::now();
+    for (const auto& order : orders.resting) {
+        if (engine.old_cancel(order.id)) {
+            checksum += order.id;
+        }
+    }
+    const auto end = std::chrono::steady_clock::now();
+
+    printStats(name, start, end, checksum, orders.resting.size());
+}
+
 void printModulo() {
     std::cout << '\n';
     std::cout<< "----------------------------------------------------------" << '\n';
@@ -122,6 +143,8 @@ int main() {
     printModulo();
     run_match_crossing_only("MATCH CROSSING ONLY");
     printModulo();
-    run_cancel_resting_only("CANCEL RESTING ONLY");
+    run_old_cancel_resting_only("CANCEL BEFORE OPTIMIZATION RESTING ONLY");
+    std::cout << '\n';
+    run_cancel_resting_only("CANCEL AFTER OPTIMIZATION RESTING ONLY");
     return 0;
 }

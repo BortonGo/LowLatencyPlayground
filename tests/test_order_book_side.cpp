@@ -95,6 +95,14 @@ TEST(OrderBookSide, RejectOrder) {
     EXPECT_EQ(obs.add(order), false);
 }
 
+TEST(OrderBookSide, CancelMissingDoesNotReserveOrderId) {
+    llp::OrderBookSide<llp::OrderSide::Buy> obs;
+
+    EXPECT_FALSE(obs.cancel(42));
+
+    auto order = make_order(llp::OrderSide::Buy, 42, 100);
+    EXPECT_TRUE(obs.add(order));
+}
 
 
 
