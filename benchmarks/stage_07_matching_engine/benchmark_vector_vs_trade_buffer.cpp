@@ -52,23 +52,6 @@ void printStats(std::string_view name, std::chrono::time_point<std::chrono::stea
     std::cout << "throughput_ops_sec = " << throughput << '\n';
 }
 
-void run_add_resting_only_vector(std::string_view name) {
-    auto orders = generate_resting_asks_and_crossing_buys(orders_cnt);
-    llp::MatchingEngine engine;
-    std::vector<llp::Trade> trades;
-    trades.reserve(orders_cnt);
-    std::uint64_t checksum = 0;
-
-    const auto start = std::chrono::steady_clock::now();
-    for (const auto& order : orders.resting) {
-        engine.add(order, trades);
-        checksum += order.id;
-    }
-    const auto end = std::chrono::steady_clock::now();
-
-    printStats(name, start, end, checksum, orders.resting.size());
-}
-
 void run_match_crossing_only_vector(std::string_view name) {
     auto orders = generate_resting_asks_and_crossing_buys(orders_cnt);
     llp::MatchingEngine engine;
@@ -89,45 +72,6 @@ void run_match_crossing_only_vector(std::string_view name) {
 
     checksum += trades.size();
     printStats(name, start, end, checksum, orders.crossing.size());
-}
-
-void run_cancel_resting_only_vector(std::string_view name) {
-    auto orders = generate_resting_asks_and_crossing_buys(orders_cnt);
-    llp::MatchingEngine engine;
-    std::vector<llp::Trade> trades;
-    trades.reserve(orders_cnt);
-    for (const auto& order : orders.resting) {
-        engine.add(order, trades);
-    }
-    std::uint64_t checksum = 0;
-
-    const auto start = std::chrono::steady_clock::now();
-    for (const auto& order : orders.resting) {
-        if (engine.cancel(order.id)) {
-            checksum += order.id;
-        }
-    }
-    const auto end = std::chrono::steady_clock::now();
-
-    printStats(name, start, end, checksum, orders.resting.size());
-}
-
-void run_add_resting_only_trade_buffer_new(std::string_view name) {
-    auto orders = generate_resting_asks_and_crossing_buys(orders_cnt);
-    llp::MatchingEngine engine;
-    llp::Trade* data = new llp::Trade[orders_cnt];
-    llp::TradeBuffer trades(data, orders_cnt);
-    std::uint64_t checksum = 0;
-
-    const auto start = std::chrono::steady_clock::now();
-    for (const auto& order : orders.resting) {
-        engine.add(order, trades);
-        checksum += order.id;
-    }
-    const auto end = std::chrono::steady_clock::now();
-
-    printStats(name, start, end, checksum, orders.resting.size());
-    delete[] data;
 }
 
 void run_match_crossing_only_trade_buffer_new(std::string_view name) {
@@ -153,46 +97,6 @@ void run_match_crossing_only_trade_buffer_new(std::string_view name) {
     delete[] data;
 }
 
-void run_cancel_resting_only_trade_buffer_new(std::string_view name) {
-    auto orders = generate_resting_asks_and_crossing_buys(orders_cnt);
-    llp::MatchingEngine engine;
-    llp::Trade* data = new llp::Trade[orders_cnt];
-    llp::TradeBuffer trades(data, orders_cnt);
-    for (const auto& order : orders.resting) {
-        engine.add(order, trades);
-    }
-    std::uint64_t checksum = 0;
-
-    const auto start = std::chrono::steady_clock::now();
-    for (const auto& order : orders.resting) {
-        if (engine.cancel(order.id)) {
-            checksum += order.id;
-        }
-    }
-    const auto end = std::chrono::steady_clock::now();
-
-    printStats(name, start, end, checksum, orders.resting.size());
-    delete[] data;
-}
-
-
-void run_add_resting_only_trade_buffer_stack(std::string_view name) {
-    auto orders = generate_resting_asks_and_crossing_buys(orders_cnt);
-    llp::MatchingEngine engine;
-    llp::Trade data[orders_cnt];
-    llp::TradeBuffer trades(data, orders_cnt);
-    std::uint64_t checksum = 0;
-
-    const auto start = std::chrono::steady_clock::now();
-    for (const auto& order : orders.resting) {
-        engine.add(order, trades);
-        checksum += order.id;
-    }
-    const auto end = std::chrono::steady_clock::now();
-
-    printStats(name, start, end, checksum, orders.resting.size());
-}
-
 void run_match_crossing_only_trade_buffer_stack(std::string_view name) {
     auto orders = generate_resting_asks_and_crossing_buys(orders_cnt);
     llp::MatchingEngine engine;
@@ -215,50 +119,11 @@ void run_match_crossing_only_trade_buffer_stack(std::string_view name) {
     printStats(name, start, end, checksum, orders.crossing.size());
 }
 
-void run_cancel_resting_only_trade_buffer_stack(std::string_view name) {
-    auto orders = generate_resting_asks_and_crossing_buys(orders_cnt);
-    llp::MatchingEngine engine;
-    llp::Trade data[orders_cnt];
-    llp::TradeBuffer trades(data, orders_cnt);
-    for (const auto& order : orders.resting) {
-        engine.add(order, trades);
-    }
-    std::uint64_t checksum = 0;
-
-    const auto start = std::chrono::steady_clock::now();
-    for (const auto& order : orders.resting) {
-        if (engine.cancel(order.id)) {
-            checksum += order.id;
-        }
-    }
-    const auto end = std::chrono::steady_clock::now();
-
-    printStats(name, start, end, checksum, orders.resting.size());
-}
-
-void printModulo() {
-    std::cout << '\n';
-    std::cout<< "----------------------------------------------------------" << '\n';
-    std::cout << '\n';
-}
-
 int main() {
-    run_add_resting_only_vector("ADD RESTING ONLY VECTOR");
-    std::cout << '\n';
-    run_add_resting_only_trade_buffer_new("ADD RESTING ONLY TRADE BUFFER NEW");
-    std::cout << '\n';
-    run_add_resting_only_trade_buffer_stack("ADD RESTING ONLY TRADE BUFFER STACK");
-    printModulo();
     run_match_crossing_only_vector("MATCH CROSSING ONLY VECTOR");
     std::cout << '\n';
     run_match_crossing_only_trade_buffer_new("MATCH CROSSING ONLY TRADE BUFFER NEW");
     std::cout << '\n';
     run_match_crossing_only_trade_buffer_stack("MATCH CROSSING ONLY TRADE BUFFER STACK");
-    printModulo();
-    run_cancel_resting_only_vector("CANCEL RESTING ONLY VECTOR");
-    std::cout << '\n';
-    run_cancel_resting_only_trade_buffer_new("CANCEL RESTING ONLY TRADE BUFFER NEW");
-    std::cout << '\n';
-    run_cancel_resting_only_trade_buffer_stack("CANCEL RESTING ONLY TRADE BUFFER STACK");
     return 0;
 }
