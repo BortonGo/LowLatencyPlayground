@@ -1,0 +1,286 @@
+
+#include "llp/order.hpp"
+#include "llp/matching_engine.hpp"
+#include "llp/latency_stats.hpp"
+#include <iostream>
+#include <cstdint>
+#include <atomic>
+#include <cstddef>
+#include <chrono>
+#include <vector>
+#include <string_view>
+
+constexpr std::size_t orders_cnt = 100'000;
+std::atomic<std::uint64_t> g_allocations{0};
+
+void* operator new(std::size_t size) {
+    g_allocations.fetch_add(1, std::memory_order_relaxed);
+    return std::malloc(size);
+}
+
+void operator delete(void* ptr, std::size_t) noexcept {
+    std::free(ptr);
+}
+
+struct MatchingBenchmarkOrders {
+    std::vector<llp::Order> resting;
+    std::vector<llp::Order> crossing;
+};
+
+MatchingBenchmarkOrders generate_resting_asks_and_crossing_buys(std::size_t count) {
+    MatchingBenchmarkOrders result;
+    result.resting.reserve(count);
+    result.crossing.reserve(count);
+    std::uint64_t next_id = 1;
+    for (std::size_t i = 0; i < count; ++i) {
+        llp::Order ask{};
+        ask.id = next_id++;
+        ask.side = llp::OrderSide::Sell;
+        ask.price = 100 + (i % 10);
+        ask.quantity = 10;
+
+        result.resting.push_back(ask);
+    }
+    for (std::size_t i = 0; i < count; ++i) {
+        llp::Order buy{};
+        buy.id = next_id++;
+        buy.side = llp::OrderSide::Buy;
+        buy.price = 109;
+        buy.quantity = 10;
+
+        result.crossing.push_back(buy);
+    }
+    return result;
+}
+
+void printStats(std::string_view name, std::chrono::time_point<std::chrono::steady_clock> START,
+    std::chrono::time_point<std::chrono::steady_clock> END, std::uint64_t checksum,
+    std::size_t oper_cnt, llp::LatencyStats& stats, std::uint64_t allocations) {
+    const auto elapsed = END - START;
+    const double elapsed_seconds = std::chrono::duration<double>(elapsed).count();
+    const double throughput = static_cast<double>(oper_cnt)/elapsed_seconds;
+    std::cout << name << '\n';
+    std::cout << "allocations = " << allocations << '\n';
+    std::cout << "checksum = " << checksum << '\n';
+    std::cout << "elapsed = " << std::chrono::duration_cast<std::chrono::microseconds>(elapsed) << '\n';
+    std::cout << "throughput_ops_sec = " << throughput << '\n';
+    std::cout << "Count: " << stats.count() << '\n';
+    std::cout << "Min: " << stats.min() << '\n';
+    std::cout << "Max: " << stats.max() << '\n';
+    std::cout << "Mean: " << stats.mean() << '\n';
+    std::cout << "Median: " << stats.median() << '\n';
+    std::cout << "p95: " << stats.percentile(95.0) << '\n';
+    std::cout << "p99: " << stats.percentile(99.0) << '\n';
+    std::cout << "p99.9: " << stats.percentile(99.9) << '\n';
+    std::cout << "p99.99: " << stats.percentile(99.99) << '\n';
+    std::cout << "p99.999: " << stats.percentile(99.999) << '\n';
+}
+
+void run_add_resting_only(std::string_view name) {
+    auto orders = generate_resting_asks_and_crossing_buys(orders_cnt);
+    llp::LatencyStats stats;
+    stats.reserve(orders_cnt);
+    llp::MatchingEngine engine;
+    llp::MatchingEngine engine_warmup;
+    llp::Trade data[orders_cnt];
+    llp::TradeBuffer trades(data, orders_cnt);
+    std::uint64_t checksum = 0;
+
+    for (int i = 0; i < 10000; ++i) {
+        engine_warmup.add(orders.resting[i], trades);
+    }
+
+    g_allocations.store(0, std::memory_order_relaxed);
+    const auto start = std::chrono::steady_clock::now();
+    for (const auto& order : orders.resting) {
+        const auto start_local = std::chrono::steady_clock::now();
+        engine.add(order, trades);
+        const auto end_local = std::chrono::steady_clock::now();
+        stats.add_sample(end_local-start_local);
+        checksum += order.id;
+    }
+    const auto end = std::chrono::steady_clock::now();
+    std::uint64_t allocations = g_allocations.load(std::memory_order_relaxed);
+    printStats(name, start, end, checksum, orders.resting.size(), stats, allocations);
+}
+
+void run_match_crossing_only_trade_buffer(std::string_view name) {
+    auto orders = generate_resting_asks_and_crossing_buys(orders_cnt);
+    llp::LatencyStats stats;
+    stats.reserve(orders_cnt);
+    llp::MatchingEngine engine;
+    llp::MatchingEngine engine_warmup;
+    llp::Trade data[orders_cnt];
+    llp::TradeBuffer trades(data, orders_cnt);
+    std::uint64_t checksum = 0;
+
+    for (const auto& order : orders.resting) {
+        engine.add(order, trades);
+    }
+    trades.clear();
+
+    for (const auto& order : orders.resting) {
+        engine_warmup.add(order, trades);
+    }
+    trades.clear();
+
+    for (int i = 0; i < 10000; ++i) {
+        engine_warmup.add(orders.crossing[i], trades);
+    }
+    trades.clear();
+
+    g_allocations.store(0, std::memory_order_relaxed);
+    const auto start = std::chrono::steady_clock::now();
+    for (const auto& order : orders.crossing) {
+        const auto start_local = std::chrono::steady_clock::now();
+        engine.add(order, trades);
+        const auto end_local = std::chrono::steady_clock::now();
+        stats.add_sample(end_local-start_local);
+        checksum += order.id;
+    }
+
+    const auto end = std::chrono::steady_clock::now();
+    checksum += trades.size();
+    std::uint64_t allocations = g_allocations.load(std::memory_order_relaxed);
+    printStats(name, start, end, checksum, orders.crossing.size(), stats, allocations);
+}
+
+void run_match_crossing_only_vector_with_reserve(std::string_view name) {
+    auto orders = generate_resting_asks_and_crossing_buys(orders_cnt);
+    llp::LatencyStats stats;
+    stats.reserve(orders_cnt);
+    llp::MatchingEngine engine;
+    llp::MatchingEngine engine_warmup;
+    std::vector<llp::Trade> trades;
+    trades.reserve(orders_cnt);
+    std::uint64_t checksum = 0;
+
+    for (const auto& order : orders.resting) {
+        engine.add(order, trades);
+    }
+    trades.clear();
+
+    for (const auto& order : orders.resting) {
+        engine_warmup.add(order, trades);
+    }
+    trades.clear();
+
+    for (int i = 0; i < 10000; ++i) {
+        engine_warmup.add(orders.crossing[i], trades);
+    }
+    trades.clear();
+
+    g_allocations.store(0, std::memory_order_relaxed);
+    const auto start = std::chrono::steady_clock::now();
+    for (const auto& order : orders.crossing) {
+        const auto start_local = std::chrono::steady_clock::now();
+        engine.add(order, trades);
+        const auto end_local = std::chrono::steady_clock::now();
+        stats.add_sample(end_local-start_local);
+        checksum += order.id;
+    }
+
+    const auto end = std::chrono::steady_clock::now();
+    checksum += trades.size();
+    std::uint64_t allocations = g_allocations.load(std::memory_order_relaxed);
+    printStats(name, start, end, checksum, orders.crossing.size(), stats, allocations);
+}
+
+void run_match_crossing_only_vector_no_reserve(std::string_view name) {
+    auto orders = generate_resting_asks_and_crossing_buys(orders_cnt);
+    llp::LatencyStats stats;
+    stats.reserve(orders_cnt);
+    llp::MatchingEngine engine;
+    llp::MatchingEngine engine_warmup;
+    std::vector<llp::Trade> trades;
+    std::uint64_t checksum = 0;
+
+    for (const auto& order : orders.resting) {
+        engine.add(order, trades);
+    }
+    trades.clear();
+
+    for (const auto& order : orders.resting) {
+        engine_warmup.add(order, trades);
+    }
+    trades.clear();
+
+    for (int i = 0; i < 10000; ++i) {
+        engine_warmup.add(orders.crossing[i], trades);
+    }
+    trades.clear();
+
+    g_allocations.store(0, std::memory_order_relaxed);
+    const auto start = std::chrono::steady_clock::now();
+    for (const auto& order : orders.crossing) {
+        const auto start_local = std::chrono::steady_clock::now();
+        engine.add(order, trades);
+        const auto end_local = std::chrono::steady_clock::now();
+        stats.add_sample(end_local-start_local);
+        checksum += order.id;
+    }
+
+    const auto end = std::chrono::steady_clock::now();
+    checksum += trades.size();
+    std::uint64_t allocations = g_allocations.load(std::memory_order_relaxed);
+    printStats(name, start, end, checksum, orders.crossing.size(), stats, allocations);
+}
+
+void run_cancel_resting_only(std::string_view name) {
+    auto orders = generate_resting_asks_and_crossing_buys(orders_cnt);
+    llp::LatencyStats stats;
+    stats.reserve(orders_cnt);
+    llp::MatchingEngine engine;
+    llp::MatchingEngine engine_warmup;
+    llp::Trade data[orders_cnt];
+    llp::TradeBuffer trades(data, orders_cnt);
+    std::uint64_t checksum = 0;
+    for (const auto& order : orders.resting) {
+        engine.add(order, trades);
+    }
+
+    for (const auto& order : orders.resting) {
+        engine_warmup.add(order, trades);
+    }
+    for (int i = 0; i < 10000; ++i) {
+        engine_warmup.cancel(orders.resting[i].id);
+    }
+
+    g_allocations.store(0, std::memory_order_relaxed);
+    const auto start = std::chrono::steady_clock::now();
+    for (const auto& order : orders.resting) {
+        const auto start_local = std::chrono::steady_clock::now();
+        if (engine.cancel(order.id)) {
+            const auto end_local = std::chrono::steady_clock::now();
+            stats.add_sample(end_local-start_local);
+            checksum += order.id;
+            continue;
+        }
+        const auto end_local = std::chrono::steady_clock::now();
+        stats.add_sample(end_local-start_local);
+    }
+    const auto end = std::chrono::steady_clock::now();
+    std::uint64_t allocations = g_allocations.load(std::memory_order_relaxed);
+    printStats(name, start, end, checksum, orders.resting.size(), stats, allocations);
+}
+
+void printModulo() {
+    std::cout << '\n';
+    std::cout<< "----------------------------------------------------------" << '\n';
+    std::cout << '\n';
+}
+
+int main() {
+    run_add_resting_only("ADD RESTING ALLOCATIONS");
+    printModulo();
+    run_match_crossing_only_trade_buffer("MATCH CROSSING ALLOCATIONS TRADE BUFFER");
+    std::cout << '\n';
+    run_match_crossing_only_vector_with_reserve("MATCH CROSSING ALLOCATIONS VECTOR(RESERVE)");
+    std::cout << '\n';
+    run_match_crossing_only_vector_no_reserve("MATCH CROSSING ALLOCATIONS VECTOR(NO RESERVE)");
+    printModulo();
+    run_cancel_resting_only("CANCEL RESTING ALLOCATIONS");
+    return 0;
+}
+
+
