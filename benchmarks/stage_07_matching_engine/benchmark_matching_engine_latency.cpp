@@ -104,9 +104,15 @@ void run_match_crossing_only(std::string_view name) {
     }
     trades.clear();
 
+    for (const auto& order : orders.resting) {
+        engine_warmup.add(order, trades);
+    }
+    trades.clear();
+
     for (int i = 0; i < 10000; ++i) {
         engine_warmup.add(orders.crossing[i], trades);
     }
+    trades.clear();
 
     const auto start = std::chrono::steady_clock::now();
     for (const auto& order : orders.crossing) {
@@ -135,6 +141,9 @@ void run_cancel_resting_only(std::string_view name) {
         engine.add(order, trades);
     }
 
+    for (const auto& order : orders.resting) {
+        engine_warmup.add(order, trades);
+    }
     for (int i = 0; i < 10000; ++i) {
         engine_warmup.cancel(orders.resting[i].id);
     }
@@ -162,11 +171,11 @@ void printModulo() {
 }
 
 int main() {
-    run_match_crossing_only("MATCH CROSSING LATENCY");
+    run_add_resting_only("ADD RESTING LATENCY");
     printModulo();
     run_match_crossing_only("MATCH CROSSING LATENCY");
     printModulo();
-    run_match_crossing_only("MATCH CROSSING LATENCY");
+    run_cancel_resting_only("CANCEL RESTING LATENCY");
     return 0;
 }
 
