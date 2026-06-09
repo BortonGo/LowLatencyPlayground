@@ -130,6 +130,8 @@ add_llp_benchmark(benchmark_matching_engine
         benchmarks/stage_07_matching_engine/benchmark_matching_engine.cpp)
 add_llp_benchmark(benchmark_vector_vs_trade_buffer
         benchmarks/stage_07_matching_engine/benchmark_vector_vs_trade_buffer.cpp)
+add_llp_benchmark(benchmark_matching_engine_latency
+        benchmarks/stage_07_matching_engine/benchmark_matching_engine_latency.cpp)
 
 enable_testing()
 include(GoogleTest)
