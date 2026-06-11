@@ -44,15 +44,18 @@ MatchingBenchmarkOrders generate_resting_asks_and_crossing_buys(std::size_t coun
 
 void printStats(std::string_view name, std::chrono::time_point<std::chrono::steady_clock> START,
     std::chrono::time_point<std::chrono::steady_clock> END, std::uint64_t checksum,
-    std::size_t oper_cnt, llp::LatencyStats& stats, std::size_t batch_sz) {
+    std::size_t oper_cnt, llp::LatencyStats& stats, std::size_t batch_sz, std::size_t batch_count) {
     const auto elapsed = END - START;
     const double elapsed_seconds = std::chrono::duration<double>(elapsed).count();
     const double throughput = static_cast<double>(oper_cnt)/elapsed_seconds;
     std::cout << name << '\n';
     std::cout << "batching_size = " << batch_sz << '\n';
+    std::cout << "batches_count = " << batch_count << '\n';
     std::cout << "checksum = " << checksum << '\n';
     std::cout << "elapsed = " << std::chrono::duration_cast<std::chrono::microseconds>(elapsed) << '\n';
     std::cout << "throughput_ops_sec = " << throughput << '\n';
+    std::cout << "estimated_per_order_latency = " << stats.mean() / batch_sz;
+    std::cout << "BATCH_LATENCY:" << '\n';
     std::cout << "Count: " << stats.count() << '\n';
     std::cout << "Min: " << stats.min() << '\n';
     std::cout << "Max: " << stats.max() << '\n';
@@ -89,27 +92,29 @@ void run_match_crossing_only(std::string_view name, std::size_t batching_size) {
         engine_warmup.add(orders.crossing[i], trades);
     }
     trades.clear();
-
+     std::size_t bcnt = 0;
     std::size_t batch_count = 0;
     const auto start = std::chrono::steady_clock::now();
 
     for (std::size_t i = 0; i < orders_cnt; i += batching_size) {
+        ++bcnt;
+        const auto start_local = std::chrono::steady_clock::now();
         while (batch_count < batching_size && i + batch_count < orders_cnt) {
             auto order = orders.crossing[i+batch_count];
-            const auto start_local = std::chrono::steady_clock::now();
-            while (!engine.add(order, trades)) {
+            if (!engine.add(order, trades)) {
+                break;
             }
-            const auto end_local = std::chrono::steady_clock::now();
             checksum += order.price + order.quantity + order.id;
             ++batch_count;
-            stats.add_sample(end_local-start_local);
         }
+        const auto end_local = std::chrono::steady_clock::now();
+        stats.add_sample(end_local-start_local);
         batch_count = 0;
     }
 
     const auto end = std::chrono::steady_clock::now();
     checksum += trades.size();
-    printStats(name, start, end, checksum, orders.crossing.size(), stats, batching_size);
+    printStats(name, start, end, checksum, orders.crossing.size(), stats, batching_size, bcnt);
 }
 
 
