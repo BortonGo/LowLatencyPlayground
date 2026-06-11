@@ -7,7 +7,7 @@
 #include <vector>
 #include <string_view>
 
-constexpr std::size_t orders_cnt = 100'000;
+constexpr std::size_t orders_cnt = 10'000'000;
 
 struct MatchingBenchmarkOrders {
     std::vector<llp::Order> resting;
@@ -143,8 +143,8 @@ int main() {
     printModulo();
     run_match_crossing_only("MATCH CROSSING ONLY");
     printModulo();
-    run_old_cancel_resting_only("CANCEL BEFORE OPTIMIZATION RESTING ONLY");
-    std::cout << '\n';
+    //run_old_cancel_resting_only("CANCEL BEFORE OPTIMIZATION RESTING ONLY");
+    //std::cout << '\n';
     run_cancel_resting_only("CANCEL AFTER OPTIMIZATION RESTING ONLY");
     return 0;
 }
