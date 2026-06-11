@@ -138,6 +138,8 @@ add_llp_benchmark(benchmark_matching_engine_allocation
         benchmarks/stage_07_matching_engine/benchmark_matching_engine_allocation.cpp)
 add_llp_benchmark(benchmark_price_level_storage
         benchmarks/stage_07_matching_engine/benchmark_price_level_storage.cpp)
+add_llp_benchmark(benchmark_matching_engine_batching
+        benchmarks/stage_07_matching_engine/benchmark_matching_engine_batching.cpp)
 
 enable_testing()
 include(GoogleTest)
