@@ -145,6 +145,11 @@ namespace llp {
         const Order* best_ask() const noexcept {
             return sell.best_order();
         }
+
+        void reserve(std::size_t order_cnt) {
+            buy.reserve(order_cnt);
+            sell.reserve(order_cnt);
+        }
     };
 
 }

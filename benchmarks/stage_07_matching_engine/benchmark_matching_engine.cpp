@@ -54,6 +54,7 @@ void printStats(std::string_view name, std::chrono::time_point<std::chrono::stea
 void run_add_resting_only(std::string_view name) {
     auto orders = generate_resting_asks_and_crossing_buys(orders_cnt);
     llp::MatchingEngine engine;
+    engine.reserve(orders_cnt);
     std::vector<llp::Trade> trades;
     trades.reserve(orders_cnt);
     std::uint64_t checksum = 0;
@@ -71,6 +72,7 @@ void run_add_resting_only(std::string_view name) {
 void run_match_crossing_only(std::string_view name) {
     auto orders = generate_resting_asks_and_crossing_buys(orders_cnt);
     llp::MatchingEngine engine;
+    engine.reserve(orders_cnt);
     std::vector<llp::Trade> trades;
     trades.reserve(orders_cnt);
     for (const auto& order : orders.resting) {
@@ -93,6 +95,7 @@ void run_match_crossing_only(std::string_view name) {
 void run_cancel_resting_only(std::string_view name) {
     auto orders = generate_resting_asks_and_crossing_buys(orders_cnt);
     llp::MatchingEngine engine;
+    engine.reserve(orders_cnt);
     std::vector<llp::Trade> trades;
     trades.reserve(orders_cnt);
     for (const auto& order : orders.resting) {

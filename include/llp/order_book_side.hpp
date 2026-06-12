@@ -102,5 +102,9 @@ namespace llp {
                 levels_.erase(levels_.begin());
             }
         }
+
+        void reserve(std::size_t order_cnt) {
+            order_price_index.reserve(order_cnt);
+        }
     };
 }
