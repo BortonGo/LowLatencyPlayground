@@ -61,5 +61,8 @@ namespace llp {
                 }
             }
         }
+        void reserve(std::size_t orders_cnt) {
+            order_level_index.reserve(orders_cnt);
+        }
     };
 }

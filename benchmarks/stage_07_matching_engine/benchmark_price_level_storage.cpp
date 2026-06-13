@@ -46,6 +46,7 @@ void printStats(std::string_view name, std::chrono::time_point<std::chrono::stea
 void run_add_flat_ask_book(std::string_view name) {
     auto orders = generate_resting_asks(orders_cnt);
     llp::FlatAskBookSide book(100, 110);
+    book.reserve(orders_cnt);
     llp::FlatAskBookSide book_warmup(100, 110);
     std::uint64_t checksum = 0;
 
@@ -65,6 +66,7 @@ void run_add_flat_ask_book(std::string_view name) {
 void run_add_order_book_side(std::string_view name) {
     auto orders = generate_resting_asks(orders_cnt);
     llp::OrderBookSide<llp::OrderSide::Sell> sell;
+    sell.reserve(orders_cnt);
     llp::OrderBookSide<llp::OrderSide::Sell> sell_warmup;
     std::uint64_t checksum = 0;
 
@@ -84,6 +86,7 @@ void run_add_order_book_side(std::string_view name) {
 void run_best_flat_ask_book(std::string_view name) {
     auto orders = generate_resting_asks(orders_cnt);
     llp::FlatAskBookSide book(100, 110);
+    book.reserve(orders_cnt);
     std::uint64_t checksum = 0;
 
     for (int i = 0; i < orders_cnt; ++i) {
@@ -104,6 +107,7 @@ void run_best_flat_ask_book(std::string_view name) {
 void run_best_order_book_side(std::string_view name) {
     auto orders = generate_resting_asks(orders_cnt);
     llp::OrderBookSide<llp::OrderSide::Sell> sell;
+    sell.reserve(orders_cnt);
     std::uint64_t checksum = 0;
 
     for (int i = 0; i < orders_cnt; ++i) {
@@ -124,6 +128,7 @@ void run_best_order_book_side(std::string_view name) {
 void run_pop_best_flat_ask_book(std::string_view name) {
     auto orders = generate_resting_asks(orders_cnt);
     llp::FlatAskBookSide book(100, 110);
+    book.reserve(orders_cnt);
     std::uint64_t checksum = 0;
 
     for (int i = 0; i < orders_cnt; ++i) {
@@ -142,6 +147,7 @@ void run_pop_best_flat_ask_book(std::string_view name) {
 void run_pop_best_order_book_side(std::string_view name) {
     auto orders = generate_resting_asks(orders_cnt);
     llp::OrderBookSide<llp::OrderSide::Sell> sell;
+    sell.reserve(orders_cnt);
     std::uint64_t checksum = 0;
 
     for (int i = 0; i < orders_cnt; ++i) {
