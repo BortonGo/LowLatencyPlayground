@@ -168,6 +168,39 @@ TEST(PriceLevelArrayBookSide, CancelBestAdvancesToNextLevel) {
     EXPECT_EQ(obs.order_count(), 1);
 }
 
+TEST(PriceLevelArrayBookSide, DuplicateIdRejected) {
+    llp::PriceLevelArrayBookSide<llp::OrderSide::Sell> obs(100, 110);
+
+    EXPECT_TRUE(obs.add(make_order(llp::OrderSide::Sell, 1, 100)));
+    EXPECT_FALSE(obs.add(make_order(llp::OrderSide::Sell, 1, 101)));
+}
+
+TEST(PriceLevelArrayBookSide, WrongSideRejected) {
+    llp::PriceLevelArrayBookSide<llp::OrderSide::Sell> obs(100, 110);
+
+    EXPECT_FALSE(obs.add(make_order(llp::OrderSide::Buy, 1, 101)));
+}
+
+TEST(PriceLevelArrayBookSide, OutOfRangeRejected) {
+    llp::PriceLevelArrayBookSide<llp::OrderSide::Buy> obs(100, 110);
+
+    EXPECT_FALSE(obs.add(make_order(llp::OrderSide::Buy, 1, 99)));
+    EXPECT_TRUE(obs.add(make_order(llp::OrderSide::Buy, 2, 100)));
+    EXPECT_FALSE(obs.add(make_order(llp::OrderSide::Buy, 3, 111)));
+    EXPECT_TRUE(obs.add(make_order(llp::OrderSide::Buy, 4, 110)));
+}
+
+TEST(PriceLevelArrayBookSide, ReserveNotChangeBehavior) {
+    llp::PriceLevelArrayBookSide<llp::OrderSide::Buy> obs(100, 110);
+    obs.reserve(3);
+
+    EXPECT_TRUE(obs.add(make_order(llp::OrderSide::Buy, 1, 101)));
+    EXPECT_EQ(obs.best_order()->id, 1);
+
+    EXPECT_TRUE(obs.add(make_order(llp::OrderSide::Buy, 2, 108)));
+    EXPECT_EQ(obs.best_order()->id, 2);
+}
+
 
 
 
