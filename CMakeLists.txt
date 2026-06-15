@@ -150,6 +150,8 @@ add_llp_benchmark(benchmark_price_level_array_book_side
         benchmarks/stage_08_profiling/benchmark_price_level_array_book_side.cpp)
 add_llp_benchmark(benchmark_flat_matching_engine
         benchmarks/stage_08_profiling/benchmark_flat_matching_engine.cpp)
+add_llp_benchmark(benchmark_flat_matching_engine_hot_path
+        benchmarks/stage_08_profiling/benchmark_flat_matching_engine_hot_path.cpp)
 
 enable_testing()
 include(GoogleTest)

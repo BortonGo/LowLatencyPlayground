@@ -1,0 +1,293 @@
+Analysis of sampling benchmark_flat_matching_engine_hot_path (pid 52728) every 1 millisecond
+Process:         benchmark_flat_matching_engine_hot_path [52728]
+Path:            /Users/USER/*/benchmark_flat_matching_engine_hot_path
+Load Address:    0x104d08000
+Identifier:      benchmark_flat_matching_engine_hot_path
+Version:         0
+Code Type:       ARM64
+Platform:        macOS
+Parent Process:  zsh [49414]
+Target Type:     live task
+
+Date/Time:       2026-06-15 13:47:03.647 +0300
+Launch Time:     2026-06-15 13:47:03.608 +0300
+OS Version:      macOS 26.5.1 (25F80)
+Report Version:  7
+Analysis Tool:   /usr/bin/sample
+
+Physical footprint:         7.0G
+Physical footprint (peak):  7.2G
+Idle exit:                  untracked
+----
+
+Call graph:
+    3901 Thread_578371   DispatchQueue_1: com.apple.main-thread  (serial)
+      3901 start  (in dyld) + 6992  [0x18d957e00]
+        3901 main  (in benchmark_flat_matching_engine_hot_path) + 200  [0x104d0afc8]
+          2365 run_match_crossing_only_flat_engine(std::basic_string_view<char>)  (in benchmark_flat_matching_engine_hot_path) + 364  [0x104d0aac8]
+          + 1812 llp::FlatMatchingEngine::add(llp::Order, llp::TradeBuffer&)  (in benchmark_flat_matching_engine_hot_path) + 260  [0x104d0a830]
+          + ! 1746 llp::PriceLevelArrayBookSide<(llp::OrderSide)2>::pop_best()  (in benchmark_flat_matching_engine_hot_path) + 84  [0x104d0dbe4]
+          + ! : 1283 std::__hash_table<std::__hash_value_type<unsigned long long, unsigned long long>>::__erase_unique<unsigned long long>(unsigned long long const&)  (in benchmark_flat_matching_engine_hot_path) + 284  [0x104d0ba1c]
+          + ! : | 937 _xzm_free  (in libsystem_malloc.dylib) + 624,120,...  [0x18db332dc,0x18db330e4,...]
+          + ! : | 136 _xzm_free  (in libsystem_malloc.dylib) + 352  [0x18db331cc]
+          + ! : | + 68 _platform_memset  (in libsystem_platform.dylib) + 180,188,...  [0x18dd1f144,0x18dd1f14c,...]
+          + ! : | + 60 __bzero  (in libsystem_platform.dylib) + 0  [0x18dd1f030]
+          + ! : | + 8 DYLD-STUB$$_platform_bzero  (in libsystem_malloc.dylib) + 12  [0x18db4a7f8]
+          + ! : | 59 _free  (in libsystem_malloc.dylib) + 0,36,...  [0x18db42c4c,0x18db42c70,...]
+          + ! : | 43 DYLD-STUB$$free  (in libc++abi.dylib) + 12,0  [0x18dcccbdc,0x18dcccbd0]
+          + ! : | 37 std::__hash_table<std::__hash_value_type<unsigned long long, unsigned long long>>::__erase_unique<unsigned long long>(unsigned long long const&)  (in benchmark_flat_matching_engine_hot_path) + 288  [0x104d0ba20]
+          + ! : | 25 _xzm_chunk_list_slot_push  (in libsystem_malloc.dylib) + 128  [0x18db3b990]
+          + ! : | + 25 _xzm_chunk_list_push  (in libsystem_malloc.dylib) + 96,44,...  [0x18db3a83c,0x18db3a808,...]
+          + ! : | 22 _xzm_chunk_list_push  (in libsystem_malloc.dylib) + 160,148  [0x18db3a87c,0x18db3a870]
+          + ! : | 11 DYLD-STUB$$operator delete(void*)  (in benchmark_flat_matching_engine_hot_path) + 4  [0x104d0f060]
+          + ! : | 10 _xzm_chunk_list_slot_push  (in libsystem_malloc.dylib) + 144,32,...  [0x18db3b9a0,0x18db3b930,...]
+          + ! : | 3 xzm_malloc_zone_try_free_default  (in libsystem_malloc.dylib) + 0  [0x18db3e108]
+          + ! : 265 llp::PriceLevelArrayBookSide<(llp::OrderSide)2>::pop_best()  (in benchmark_flat_matching_engine_hot_path) + 84  [0x104d0dbe4]
+          + ! : | 265 std::__hash_table<std::__hash_value_type<unsigned long long, unsigned long long>>::__erase_unique<unsigned long long>(unsigned long long const&)  (in benchmark_flat_matching_engine_hot_path) + 96,88,...  [0x104d0b960,0x104d0b958,...]
+          + ! : 120 std::__hash_table<std::__hash_value_type<unsigned long long, unsigned long long>>::__erase_unique<unsigned long long>(unsigned long long const&)  (in benchmark_flat_matching_engine_hot_path) + 268  [0x104d0ba0c]
+          + ! : | 120 std::__hash_table<std::__hash_value_type<unsigned long long, unsigned long long>>::remove(std::__hash_const_iterator<std::__hash_node<std::__hash_value_type<unsigned long long, unsigned long long>, void*>*>)  (in benchmark_flat_matching_engine_hot_path) + 232,268,...  [0x104d0bb18,0x104d0bb3c,...]
+          + ! : 39 _xzm_free  (in libsystem_malloc.dylib) + 1380,1384,...  [0x18db335d0,0x18db335d4,...]
+          + ! : 24 std::__hash_table<std::__hash_value_type<unsigned long long, unsigned long long>>::__erase_unique<unsigned long long>(unsigned long long const&)  (in benchmark_flat_matching_engine_hot_path) + 0,296,...  [0x104d0b900,0x104d0ba28,...]
+          + ! : 15 _xzm_chunk_list_slot_push  (in libsystem_malloc.dylib) + 268  [0x18db3ba1c]
+          + ! 59 llp::PriceLevelArrayBookSide<(llp::OrderSide)2>::pop_best()  (in benchmark_flat_matching_engine_hot_path) + 156,40,...  [0x104d0dc2c,0x104d0dbb8,...]
+          + ! 7 llp::PriceLevelArrayBookSide<(llp::OrderSide)2>::pop_best()  (in benchmark_flat_matching_engine_hot_path) + 120  [0x104d0dc08]
+          + !   4 _xzm_xzone_madvise_batch  (in libsystem_malloc.dylib) + 456  [0x18db3b030]
+          + !   | 4 xzm_reclaim_mark_free_locked  (in libsystem_malloc.dylib) + 232  [0x18db1a9c0]
+          + !   |   4 mach_vm_reclaim_ring_resize  (in libsystem_kernel.dylib) + 88  [0x18dce4f94]
+          + !   |     4 mach_vm_deferred_reclamation_buffer_resize  (in libsystem_kernel.dylib) + 140  [0x18dcfa4d0]
+          + !   |       4 mach_msg2_internal  (in libsystem_kernel.dylib) + 76  [0x18dce4574]
+          + !   |         4 mach_msg2_trap  (in libsystem_kernel.dylib) + 8  [0x18dcd1c34]
+          + !   3 _xzm_free  (in libsystem_malloc.dylib) + 232,260,...  [0x18db33154,0x18db33170,...]
+          + 327 llp::FlatMatchingEngine::add(llp::Order, llp::TradeBuffer&)  (in benchmark_flat_matching_engine_hot_path) + 148,220,...  [0x104d0a7c0,0x104d0a808,...]
+          + 147 llp::PriceLevelArrayBookSide<(llp::OrderSide)1>::add(llp::Order const&)  (in benchmark_flat_matching_engine_hot_path) + 492  [0x104d0defc]
+          + ! 122 std::__hash_table<std::__hash_value_type<unsigned long long, unsigned long long>>::__emplace_unique_key_args<unsigned long long, std::piecewise_construct_t const&, std::tuple<unsigned long long const&>, std::tuple<>>(unsigned long long const&, std::piecewise_construct_t const&, std::tuple<unsigned long long const&>&&, std::tuple<>&&)  (in benchmark_flat_matching_engine_hot_path) + 272  [0x104d0c978]
+          + ! : 107 operator new(unsigned long)  (in libc++abi.dylib) + 52  [0x18dccc7e8]
+          + ! : | 44 _xzm_xzone_thread_cache_fill_and_malloc  (in libsystem_malloc.dylib) + 116  [0x18db395cc]
+          + ! : | + 18 _xzm_xzone_find_and_malloc_from_freelist_chunk  (in libsystem_malloc.dylib) + 336  [0x18db3a064]
+          + ! : | + ! 18 _xzm_xzone_malloc_from_freelist_chunk  (in libsystem_malloc.dylib) + 112,380,...  [0x18db39b88,0x18db39c94,...]
+          + ! : | + 10 _xzm_xzone_find_and_malloc_from_freelist_chunk  (in libsystem_malloc.dylib) + 168  [0x18db39fbc]
+          + ! : | + ! 10 _xzm_chunk_list_pop  (in libsystem_malloc.dylib) + 44,76,...  [0x18db3a8ac,0x18db3a8cc,...]
+          + ! : | + 10 _xzm_xzone_find_and_malloc_from_freelist_chunk  (in libsystem_malloc.dylib) + 76,184,...  [0x18db39f60,0x18db39fcc,...]
+          + ! : | + 5 _xzm_xzone_malloc_from_freelist_chunk  (in libsystem_malloc.dylib) + 688,684  [0x18db39dc8,0x18db39dc4]
+          + ! : | + 1 _xzm_chunk_list_pop  (in libsystem_malloc.dylib) + 228  [0x18db3a964]
+          + ! : | 20 _xzm_xzone_thread_cache_fill_and_malloc  (in libsystem_malloc.dylib) + 84  [0x18db395ac]
+          + ! : | + 20 _xzm_xzone_malloc_from_freelist_chunk  (in libsystem_malloc.dylib) + 112,196,...  [0x18db39b88,0x18db39bdc,...]
+          + ! : | 13 <deduplicated_symbol>  (in libsystem_malloc.dylib) + 0,212,...  [0x18db320d4,0x18db321a8,...]
+          + ! : | 12 malloc_type_malloc  (in libsystem_malloc.dylib) + 16,44,...  [0x18db25ff4,0x18db26010,...]
+          + ! : | 11 _xzm_xzone_malloc  (in libsystem_malloc.dylib) + 8,44,...  [0x18db328c8,0x18db328ec,...]
+          + ! : | 4 _xzm_xzone_find_and_malloc_from_freelist_chunk  (in libsystem_malloc.dylib) + 1928,1944  [0x18db3a69c,0x18db3a6ac]
+          + ! : | 3 _xzm_xzone_thread_cache_fill_and_malloc  (in libsystem_malloc.dylib) + 36  [0x18db3957c]
+          + ! : 7 operator new(unsigned long)  (in libc++abi.dylib) + 36,52  [0x18dccc7d8,0x18dccc7e8]
+          + ! : 6 DYLD-STUB$$operator new(unsigned long)  (in benchmark_flat_matching_engine_hot_path) + 8,4  [0x104d0f070,0x104d0f06c]
+          + ! : 2 _xzm_xzone_thread_cache_fill_and_malloc  (in libsystem_malloc.dylib) + 160  [0x18db395f8]
+          + ! 22 std::__hash_table<std::__hash_value_type<unsigned long long, unsigned long long>>::__emplace_unique_key_args<unsigned long long, std::piecewise_construct_t const&, std::tuple<unsigned long long const&>, std::tuple<>>(unsigned long long const&, std::piecewise_construct_t const&, std::tuple<unsigned long long const&>&&, std::tuple<>&&)  (in benchmark_flat_matching_engine_hot_path) + 676,32,...  [0x104d0cb0c,0x104d0c888,...]
+          + ! 3 llp::PriceLevelArrayBookSide<(llp::OrderSide)1>::add(llp::Order const&)  (in benchmark_flat_matching_engine_hot_path) + 492,524,...  [0x104d0defc,0x104d0df1c,...]
+          + 54 run_match_crossing_only_flat_engine(std::basic_string_view<char>)  (in benchmark_flat_matching_engine_hot_path) + 364  [0x104d0aac8]
+          + ! 54 llp::PriceLevelArrayBookSide<(llp::OrderSide)1>::add(llp::Order const&)  (in benchmark_flat_matching_engine_hot_path) + 108,80,...  [0x104d0dd7c,0x104d0dd60,...]
+          + 10 llp::PriceLevelArrayBookSide<(llp::OrderSide)2>::pop_best()  (in benchmark_flat_matching_engine_hot_path) + 376,380  [0x104d0dd08,0x104d0dd0c]
+          + 7 std::__hash_table<std::__hash_value_type<unsigned long long, unsigned long long>>::__emplace_unique_key_args<unsigned long long, std::piecewise_construct_t const&, std::tuple<unsigned long long const&>, std::tuple<>>(unsigned long long const&, std::piecewise_construct_t const&, std::tuple<unsigned long long const&>&&, std::tuple<>&&)  (in benchmark_flat_matching_engine_hot_path) + 384,388  [0x104d0c9e8,0x104d0c9ec]
+          + 5 llp::PriceLevelArrayBookSide<(llp::OrderSide)1>::add(llp::Order const&)  (in benchmark_flat_matching_engine_hot_path) + 0,8  [0x104d0dd10,0x104d0dd18]
+          + 3 llp::PriceLevelArrayBookSide<(llp::OrderSide)1>::add(llp::Order const&)  (in benchmark_flat_matching_engine_hot_path) + 404  [0x104d0dea4]
+          +   2 std::deque<llp::Order>::__add_back_capacity()  (in benchmark_flat_matching_engine_hot_path) + 124  [0x104d0c2a8]
+          +   : 2 operator new(unsigned long)  (in libc++abi.dylib) + 52  [0x18dccc7e8]
+          +   :   1 _xzm_xzone_malloc_freelist_outlined  (in libsystem_malloc.dylib) + 324  [0x18db3977c]
+          +   :   | 1 _xzm_xzone_find_and_malloc_from_freelist_chunk  (in libsystem_malloc.dylib) + 168  [0x18db39fbc]
+          +   :   |   1 _xzm_chunk_list_pop  (in libsystem_malloc.dylib) + 208  [0x18db3a950]
+          +   :   1 _xzm_xzone_malloc_freelist_outlined  (in libsystem_malloc.dylib) + 540  [0x18db39854]
+          +   1 std::deque<llp::Order>::__add_back_capacity()  (in benchmark_flat_matching_engine_hot_path) + 144  [0x104d0c2bc]
+          610 run_match_crossing_only_flat_engine(std::basic_string_view<char>)  (in benchmark_flat_matching_engine_hot_path) + 244  [0x104d0aa50]
+          + 277 llp::PriceLevelArrayBookSide<(llp::OrderSide)2>::add(llp::Order const&)  (in benchmark_flat_matching_engine_hot_path) + 492  [0x104d0e2c4]
+          + ! 221 std::__hash_table<std::__hash_value_type<unsigned long long, unsigned long long>>::__emplace_unique_key_args<unsigned long long, std::piecewise_construct_t const&, std::tuple<unsigned long long const&>, std::tuple<>>(unsigned long long const&, std::piecewise_construct_t const&, std::tuple<unsigned long long const&>&&, std::tuple<>&&)  (in benchmark_flat_matching_engine_hot_path) + 272  [0x104d0c978]
+          + ! : 187 operator new(unsigned long)  (in libc++abi.dylib) + 52  [0x18dccc7e8]
+          + ! : | 56 malloc_type_malloc  (in libsystem_malloc.dylib) + 16,44,...  [0x18db25ff4,0x18db26010,...]
+          + ! : | 46 _xzm_xzone_thread_cache_fill_and_malloc  (in libsystem_malloc.dylib) + 120  [0x18db395d0]
+          + ! : | 42 _xzm_xzone_malloc  (in libsystem_malloc.dylib) + 8,24,...  [0x18db328c8,0x18db328d8,...]
+          + ! : | 38 <deduplicated_symbol>  (in libsystem_malloc.dylib) + 112,0,...  [0x18db32144,0x18db320d4,...]
+          + ! : | 4 DYLD-STUB$$malloc_type_malloc  (in libc++abi.dylib) + 12  [0x18dcccc1c]
+          + ! : | 1 _xzm_xzone_thread_cache_fill_and_malloc  (in libsystem_malloc.dylib) + 116  [0x18db395cc]
+          + ! : |   1 _xzm_xzone_find_and_malloc_from_freelist_chunk  (in libsystem_malloc.dylib) + 1308  [0x18db3a430]
+          + ! : |     1 xzm_segment_group_alloc_chunk  (in libsystem_malloc.dylib) + 504  [0x18db1b5c4]
+          + ! : |       1 _xzm_segment_group_find_and_allocate_chunk  (in libsystem_malloc.dylib) + 544  [0x18db1bc10]
+          + ! : 26 operator new(unsigned long)  (in libc++abi.dylib) + 36,52,...  [0x18dccc7d8,0x18dccc7e8,...]
+          + ! : 8 DYLD-STUB$$operator new(unsigned long)  (in benchmark_flat_matching_engine_hot_path) + 4  [0x104d0f06c]
+          + ! 49 std::__hash_table<std::__hash_value_type<unsigned long long, unsigned long long>>::__emplace_unique_key_args<unsigned long long, std::piecewise_construct_t const&, std::tuple<unsigned long long const&>, std::tuple<>>(unsigned long long const&, std::piecewise_construct_t const&, std::tuple<unsigned long long const&>&&, std::tuple<>&&)  (in benchmark_flat_matching_engine_hot_path) + 32,40,...  [0x104d0c888,0x104d0c890,...]
+          + ! 6 llp::PriceLevelArrayBookSide<(llp::OrderSide)2>::add(llp::Order const&)  (in benchmark_flat_matching_engine_hot_path) + 512,520  [0x104d0e2d8,0x104d0e2e0]
+          + ! 1 operator new(unsigned long)  (in libc++abi.dylib) + 80  [0x18dccc804]
+          + 235 run_match_crossing_only_flat_engine(std::basic_string_view<char>)  (in benchmark_flat_matching_engine_hot_path) + 244  [0x104d0aa50]
+          + ! 235 llp::PriceLevelArrayBookSide<(llp::OrderSide)2>::add(llp::Order const&)  (in benchmark_flat_matching_engine_hot_path) + 108,444,...  [0x104d0e144,0x104d0e294,...]
+          + 41 llp::PriceLevelArrayBookSide<(llp::OrderSide)2>::add(llp::Order const&)  (in benchmark_flat_matching_engine_hot_path) + 404  [0x104d0e26c]
+          + ! 36 std::deque<llp::Order>::__add_back_capacity()  (in benchmark_flat_matching_engine_hot_path) + 124  [0x104d0c2a8]
+          + ! : 36 operator new(unsigned long)  (in libc++abi.dylib) + 52  [0x18dccc7e8]
+          + ! :   34 _xzm_xzone_malloc_freelist_outlined  (in libsystem_malloc.dylib) + 756  [0x18db3992c]
+          + ! :   2 _xzm_xzone_malloc_freelist_outlined  (in libsystem_malloc.dylib) + 324  [0x18db3977c]
+          + ! :     1 _xzm_chunk_list_pop  (in libsystem_malloc.dylib) + 228  [0x18db3a964]
+          + ! :     1 _xzm_xzone_find_and_malloc_from_freelist_chunk  (in libsystem_malloc.dylib) + 1308  [0x18db3a430]
+          + ! :       1 xzm_segment_group_alloc_chunk  (in libsystem_malloc.dylib) + 628  [0x18db1b640]
+          + ! :         1 _xzm_segment_group_alloc_segment  (in libsystem_malloc.dylib) + 752  [0x18db1dd84]
+          + ! :           1 mach_vm_map  (in libsystem_kernel.dylib) + 128  [0x18dcd19d0]
+          + ! :             1 _kernelrpc_mach_vm_map_trap  (in libsystem_kernel.dylib) + 8  [0x18dcd1acc]
+          + ! 4 std::deque<llp::Order>::__add_back_capacity()  (in benchmark_flat_matching_engine_hot_path) + 188  [0x104d0c2e8]
+          + ! : 4 operator new(unsigned long)  (in libc++abi.dylib) + 52  [0x18dccc7e8]
+          + ! :   4 _xzm_xzone_malloc_freelist_outlined  (in libsystem_malloc.dylib) + 756  [0x18db3992c]
+          + ! 1 std::deque<llp::Order>::__add_back_capacity()  (in benchmark_flat_matching_engine_hot_path) + 176  [0x104d0c2dc]
+          + !   1 operator new(unsigned long)  (in libc++abi.dylib) + 52  [0x18dccc7e8]
+          + !     1 _xzm_xzone_malloc_freelist_outlined  (in libsystem_malloc.dylib) + 756  [0x18db3992c]
+          + 27 llp::FlatMatchingEngine::add(llp::Order, llp::TradeBuffer&)  (in benchmark_flat_matching_engine_hot_path) + 20,272,...  [0x104d0a740,0x104d0a83c,...]
+          + 17 llp::PriceLevelArrayBookSide<(llp::OrderSide)2>::add(llp::Order const&)  (in benchmark_flat_matching_engine_hot_path) + 8,548,...  [0x104d0e0e0,0x104d0e2fc,...]
+          + 13 std::__hash_table<std::__hash_value_type<unsigned long long, unsigned long long>>::__emplace_unique_key_args<unsigned long long, std::piecewise_construct_t const&, std::tuple<unsigned long long const&>, std::tuple<>>(unsigned long long const&, std::piecewise_construct_t const&, std::tuple<unsigned long long const&>&&, std::tuple<>&&)  (in benchmark_flat_matching_engine_hot_path) + 384,388,...  [0x104d0c9e8,0x104d0c9ec,...]
+          421 run_match_crossing_only_flat_engine(std::basic_string_view<char>)  (in benchmark_flat_matching_engine_hot_path) + 196  [0x104d0aa20]
+          + 269 llp::PriceLevelArrayBookSide<(llp::OrderSide)2>::add(llp::Order const&)  (in benchmark_flat_matching_engine_hot_path) + 492  [0x104d0e2c4]
+          + ! 196 std::__hash_table<std::__hash_value_type<unsigned long long, unsigned long long>>::__emplace_unique_key_args<unsigned long long, std::piecewise_construct_t const&, std::tuple<unsigned long long const&>, std::tuple<>>(unsigned long long const&, std::piecewise_construct_t const&, std::tuple<unsigned long long const&>&&, std::tuple<>&&)  (in benchmark_flat_matching_engine_hot_path) + 272  [0x104d0c978]
+          + ! : 165 operator new(unsigned long)  (in libc++abi.dylib) + 52  [0x18dccc7e8]
+          + ! : | 53 malloc_type_malloc  (in libsystem_malloc.dylib) + 16,72,...  [0x18db25ff4,0x18db2602c,...]
+          + ! : | 38 _xzm_xzone_malloc  (in libsystem_malloc.dylib) + 172,8,...  [0x18db3296c,0x18db328c8,...]
+          + ! : | 37 <deduplicated_symbol>  (in libsystem_malloc.dylib) + 112,212,...  [0x18db32144,0x18db321a8,...]
+          + ! : | 30 _xzm_xzone_thread_cache_fill_and_malloc  (in libsystem_malloc.dylib) + 120  [0x18db395d0]
+          + ! : | 3 DYLD-STUB$$malloc_type_malloc  (in libc++abi.dylib) + 12  [0x18dcccc1c]
+          + ! : | 3 _xzm_xzone_thread_cache_fill_and_malloc  (in libsystem_malloc.dylib) + 116  [0x18db395cc]
+          + ! : | + 3 _xzm_xzone_find_and_malloc_from_freelist_chunk  (in libsystem_malloc.dylib) + 1308  [0x18db3a430]
+          + ! : | +   2 xzm_segment_group_alloc_chunk  (in libsystem_malloc.dylib) + 628  [0x18db1b640]
+          + ! : | +   ! 2 _xzm_segment_group_alloc_segment  (in libsystem_malloc.dylib) + 752  [0x18db1dd84]
+          + ! : | +   !   2 mach_vm_map  (in libsystem_kernel.dylib) + 128  [0x18dcd19d0]
+          + ! : | +   !     2 _kernelrpc_mach_vm_map_trap  (in libsystem_kernel.dylib) + 8  [0x18dcd1acc]
+          + ! : | +   1 xzm_segment_group_alloc_chunk  (in libsystem_malloc.dylib) + 504  [0x18db1b5c4]
+          + ! : | +     1 _xzm_segment_group_find_and_allocate_chunk  (in libsystem_malloc.dylib) + 788  [0x18db1bd04]
+          + ! : | +       1 _xzm_segment_group_segment_span_free  (in libsystem_malloc.dylib) + 216  [0x18db1e45c]
+          + ! : | 1 _xzm_xzone_malloc_tiny_or_early  (in libsystem_malloc.dylib) + 0  [0x18db395fc]
+          + ! : 23 operator new(unsigned long)  (in libc++abi.dylib) + 36,52  [0x18dccc7d8,0x18dccc7e8]
+          + ! : 8 DYLD-STUB$$operator new(unsigned long)  (in benchmark_flat_matching_engine_hot_path) + 4  [0x104d0f06c]
+          + ! 63 std::__hash_table<std::__hash_value_type<unsigned long long, unsigned long long>>::__emplace_unique_key_args<unsigned long long, std::piecewise_construct_t const&, std::tuple<unsigned long long const&>, std::tuple<>>(unsigned long long const&, std::piecewise_construct_t const&, std::tuple<unsigned long long const&>&&, std::tuple<>&&)  (in benchmark_flat_matching_engine_hot_path) + 32,292,...  [0x104d0c888,0x104d0c98c,...]
+          + ! 8 llp::PriceLevelArrayBookSide<(llp::OrderSide)2>::add(llp::Order const&)  (in benchmark_flat_matching_engine_hot_path) + 512,520  [0x104d0e2d8,0x104d0e2e0]
+          + ! 2 operator new(unsigned long)  (in libc++abi.dylib) + 80  [0x18dccc804]
+          + 57 run_match_crossing_only_flat_engine(std::basic_string_view<char>)  (in benchmark_flat_matching_engine_hot_path) + 196  [0x104d0aa20]
+          + ! 57 llp::PriceLevelArrayBookSide<(llp::OrderSide)2>::add(llp::Order const&)  (in benchmark_flat_matching_engine_hot_path) + 108,308,...  [0x104d0e144,0x104d0e20c,...]
+          + 40 llp::PriceLevelArrayBookSide<(llp::OrderSide)2>::add(llp::Order const&)  (in benchmark_flat_matching_engine_hot_path) + 404  [0x104d0e26c]
+          + ! 39 std::deque<llp::Order>::__add_back_capacity()  (in benchmark_flat_matching_engine_hot_path) + 124  [0x104d0c2a8]
+          + ! : 39 operator new(unsigned long)  (in libc++abi.dylib) + 52  [0x18dccc7e8]
+          + ! :   36 _xzm_xzone_malloc_freelist_outlined  (in libsystem_malloc.dylib) + 756  [0x18db3992c]
+          + ! :   3 _xzm_xzone_malloc_freelist_outlined  (in libsystem_malloc.dylib) + 324  [0x18db3977c]
+          + ! :     3 _xzm_xzone_find_and_malloc_from_freelist_chunk  (in libsystem_malloc.dylib) + 1308  [0x18db3a430]
+          + ! :       3 xzm_segment_group_alloc_chunk  (in libsystem_malloc.dylib) + 504  [0x18db1b5c4]
+          + ! :         2 _xzm_segment_group_find_and_allocate_chunk  (in libsystem_malloc.dylib) + 324,1168  [0x18db1bb34,0x18db1be80]
+          + ! :         1 _xzm_segment_group_find_and_allocate_chunk  (in libsystem_malloc.dylib) + 788  [0x18db1bd04]
+          + ! :           1 _xzm_segment_group_segment_span_free  (in libsystem_malloc.dylib) + 12  [0x18db1e390]
+          + ! 1 std::deque<llp::Order>::__add_back_capacity()  (in benchmark_flat_matching_engine_hot_path) + 188  [0x104d0c2e8]
+          + !   1 operator new(unsigned long)  (in libc++abi.dylib) + 52  [0x18dccc7e8]
+          + !     1 _xzm_xzone_malloc_freelist_outlined  (in libsystem_malloc.dylib) + 756  [0x18db3992c]
+          + 25 llp::FlatMatchingEngine::add(llp::Order, llp::TradeBuffer&)  (in benchmark_flat_matching_engine_hot_path) + 40,12,...  [0x104d0a754,0x104d0a738,...]
+          + 17 std::__hash_table<std::__hash_value_type<unsigned long long, unsigned long long>>::__emplace_unique_key_args<unsigned long long, std::piecewise_construct_t const&, std::tuple<unsigned long long const&>, std::tuple<>>(unsigned long long const&, std::piecewise_construct_t const&, std::tuple<unsigned long long const&>&&, std::tuple<>&&)  (in benchmark_flat_matching_engine_hot_path) + 384,376,...  [0x104d0c9e8,0x104d0c9e0,...]
+          + 13 llp::PriceLevelArrayBookSide<(llp::OrderSide)2>::add(llp::Order const&)  (in benchmark_flat_matching_engine_hot_path) + 8,548,...  [0x104d0e0e0,0x104d0e2fc,...]
+          327 run_match_crossing_only_flat_engine(std::basic_string_view<char>)  (in benchmark_flat_matching_engine_hot_path) + 340,172,...  [0x104d0aab0,0x104d0aa08,...]
+          65 run_match_crossing_only_flat_engine(std::basic_string_view<char>)  (in benchmark_flat_matching_engine_hot_path) + 52  [0x104d0a990]
+          + 65 generate_resting_asks_and_crossing_buys(unsigned long)  (in benchmark_flat_matching_engine_hot_path) + 476,528,...  [0x104d08ef4,0x104d08f28,...]
+          34 run_match_crossing_only_flat_engine(std::basic_string_view<char>)  (in benchmark_flat_matching_engine_hot_path) + 144  [0x104d0a9ec]
+          + 34 __bzero  (in libsystem_platform.dylib) + 64  [0x18dd1f070]
+          33 run_match_crossing_only_flat_engine(std::basic_string_view<char>)  (in benchmark_flat_matching_engine_hot_path) + 300  [0x104d0aa88]
+          + 33 llp::FlatMatchingEngine::add(llp::Order, llp::TradeBuffer&)  (in benchmark_flat_matching_engine_hot_path) + 260  [0x104d0a830]
+          +   33 llp::PriceLevelArrayBookSide<(llp::OrderSide)2>::pop_best()  (in benchmark_flat_matching_engine_hot_path) + 84  [0x104d0dbe4]
+          +     26 llp::PriceLevelArrayBookSide<(llp::OrderSide)2>::pop_best()  (in benchmark_flat_matching_engine_hot_path) + 84  [0x104d0dbe4]
+          +     ! 26 std::__hash_table<std::__hash_value_type<unsigned long long, unsigned long long>>::__erase_unique<unsigned long long>(unsigned long long const&)  (in benchmark_flat_matching_engine_hot_path) + 96  [0x104d0b960]
+          +     6 std::__hash_table<std::__hash_value_type<unsigned long long, unsigned long long>>::__erase_unique<unsigned long long>(unsigned long long const&)  (in benchmark_flat_matching_engine_hot_path) + 268  [0x104d0ba0c]
+          +     ! 6 std::__hash_table<std::__hash_value_type<unsigned long long, unsigned long long>>::remove(std::__hash_const_iterator<std::__hash_node<std::__hash_value_type<unsigned long long, unsigned long long>, void*>*>)  (in benchmark_flat_matching_engine_hot_path) + 232  [0x104d0bb18]
+          +     1 std::__hash_table<std::__hash_value_type<unsigned long long, unsigned long long>>::__erase_unique<unsigned long long>(unsigned long long const&)  (in benchmark_flat_matching_engine_hot_path) + 284  [0x104d0ba1c]
+          +       1 _xzm_free  (in libsystem_malloc.dylib) + 196  [0x18db33130]
+          18 run_match_crossing_only_flat_engine(std::basic_string_view<char>)  (in benchmark_flat_matching_engine_hot_path) + 100  [0x104d0a9c0]
+          + 9 llp::FlatMatchingEngine::reserve(unsigned long)  (in benchmark_flat_matching_engine_hot_path) + 100  [0x104d0a5dc]
+          + ! 9 std::__hash_table<std::__hash_value_type<unsigned long long, unsigned long long>>::__do_rehash<true>(unsigned long)  (in benchmark_flat_matching_engine_hot_path) + 88  [0x104d0b1cc]
+          + !   9 __bzero  (in libsystem_platform.dylib) + 64  [0x18dd1f070]
+          + 9 std::__hash_table<std::__hash_value_type<unsigned long long, unsigned long long>>::__do_rehash<true>(unsigned long)  (in benchmark_flat_matching_engine_hot_path) + 88  [0x104d0b1cc]
+          +   9 __bzero  (in libsystem_platform.dylib) + 64,68  [0x18dd1f070,0x18dd1f074]
+          17 run_match_crossing_only_flat_engine(std::basic_string_view<char>)  (in benchmark_flat_matching_engine_hot_path) + 116  [0x104d0a9d0]
+          + 9 std::__hash_table<std::__hash_value_type<unsigned long long, unsigned long long>>::__do_rehash<true>(unsigned long)  (in benchmark_flat_matching_engine_hot_path) + 88  [0x104d0b1cc]
+          + ! 9 __bzero  (in libsystem_platform.dylib) + 64  [0x18dd1f070]
+          + 8 llp::FlatMatchingEngine::reserve(unsigned long)  (in benchmark_flat_matching_engine_hot_path) + 100  [0x104d0a5dc]
+          +   8 std::__hash_table<std::__hash_value_type<unsigned long long, unsigned long long>>::__do_rehash<true>(unsigned long)  (in benchmark_flat_matching_engine_hot_path) + 88  [0x104d0b1cc]
+          +     8 __bzero  (in libsystem_platform.dylib) + 64  [0x18dd1f070]
+          11 llp::FlatMatchingEngine::add(llp::Order, llp::TradeBuffer&)  (in benchmark_flat_matching_engine_hot_path) + 496,524  [0x104d0a91c,0x104d0a938]
+
+Total number in stack (recursive counted multiple, when >=5):
+        9       operator new(unsigned long)  (in libc++abi.dylib) + 52  [0x18dccc7e8]
+        6       __bzero  (in libsystem_platform.dylib) + 0  [0x18dd1f030]
+        6       _xzm_xzone_malloc_freelist_outlined  (in libsystem_malloc.dylib) + 0  [0x18db39638]
+        6       llp::PriceLevelArrayBookSide<(llp::OrderSide)2>::add(llp::Order const&)  (in benchmark_flat_matching_engine_hot_path) + 0  [0x104d0e0d8]
+        6       std::__hash_table<std::__hash_value_type<unsigned long long, unsigned long long>>::__emplace_unique_key_args<unsigned long long, std::piecewise_construct_t const&, std::tuple<unsigned long long const&>, std::tuple<>>(unsigned long long const&, std::piecewise_construct_t const&, std::tuple<unsigned long long const&>&&, std::tuple<>&&)  (in benchmark_flat_matching_engine_hot_path) + 0  [0x104d0c868]
+        5       operator new(unsigned long)  (in libc++abi.dylib) + 0  [0x18dccc7b4]
+
+Sort by top of stack, same collapsed (when >= 5):
+        _xzm_free  (in libsystem_malloc.dylib)        980
+        llp::FlatMatchingEngine::add(llp::Order, llp::TradeBuffer&)  (in benchmark_flat_matching_engine_hot_path)        390
+        std::__hash_table<std::__hash_value_type<unsigned long long, unsigned long long>>::__erase_unique<unsigned long long>(unsigned long long const&)  (in benchmark_flat_matching_engine_hot_path)        352
+        llp::PriceLevelArrayBookSide<(llp::OrderSide)2>::add(llp::Order const&)  (in benchmark_flat_matching_engine_hot_path)        336
+        run_match_crossing_only_flat_engine(std::basic_string_view<char>)  (in benchmark_flat_matching_engine_hot_path)        327
+        std::__hash_table<std::__hash_value_type<unsigned long long, unsigned long long>>::__emplace_unique_key_args<unsigned long long, std::piecewise_construct_t const&, std::tuple<unsigned long long const&>, std::tuple<>>(unsigned long long const&, std::piecewise_construct_t const&, std::tuple<unsigned long long const&>&&, std::tuple<>&&)  (in benchmark_flat_matching_engine_hot_path)        171
+        __bzero  (in libsystem_platform.dylib)        129
+        std::__hash_table<std::__hash_value_type<unsigned long long, unsigned long long>>::remove(std::__hash_const_iterator<std::__hash_node<std::__hash_value_type<unsigned long long, unsigned long long>, void*>*>)  (in benchmark_flat_matching_engine_hot_path)        126
+        malloc_type_malloc  (in libsystem_malloc.dylib)        121
+        _xzm_xzone_malloc  (in libsystem_malloc.dylib)        91
+        <deduplicated_symbol>  (in libsystem_malloc.dylib)        88
+        _xzm_xzone_thread_cache_fill_and_malloc  (in libsystem_malloc.dylib)        81
+        _xzm_xzone_malloc_freelist_outlined  (in libsystem_malloc.dylib)        77
+        llp::PriceLevelArrayBookSide<(llp::OrderSide)2>::pop_best()  (in benchmark_flat_matching_engine_hot_path)        69
+        _platform_memset  (in libsystem_platform.dylib)        68
+        generate_resting_asks_and_crossing_buys(unsigned long)  (in benchmark_flat_matching_engine_hot_path)        65
+        llp::PriceLevelArrayBookSide<(llp::OrderSide)1>::add(llp::Order const&)  (in benchmark_flat_matching_engine_hot_path)        62
+        _free  (in libsystem_malloc.dylib)        59
+        operator new(unsigned long)  (in libc++abi.dylib)        59
+        _xzm_chunk_list_push  (in libsystem_malloc.dylib)        47
+        DYLD-STUB$$free  (in libc++abi.dylib)        43
+        _xzm_xzone_malloc_from_freelist_chunk  (in libsystem_malloc.dylib)        43
+        _xzm_chunk_list_slot_push  (in libsystem_malloc.dylib)        25
+        DYLD-STUB$$operator new(unsigned long)  (in benchmark_flat_matching_engine_hot_path)        22
+        _xzm_xzone_find_and_malloc_from_freelist_chunk  (in libsystem_malloc.dylib)        14
+        _xzm_chunk_list_pop  (in libsystem_malloc.dylib)        13
+        DYLD-STUB$$operator delete(void*)  (in benchmark_flat_matching_engine_hot_path)        11
+        DYLD-STUB$$_platform_bzero  (in libsystem_malloc.dylib)        8
+        DYLD-STUB$$malloc_type_malloc  (in libc++abi.dylib)        7
+
+Binary Images:
+       0x104d08000 -        0x104d0f737 +benchmark_flat_matching_engine_hot_path (0) <EAE25CE1-A70D-3132-BB12-809EC8ED9338> /Users/*/benchmark_flat_matching_engine_hot_path
+       0x18d8b0000 -        0x18d902b4b  libobjc.A.dylib (951.7) <FF1D8AE4-ABEF-35F1-A30A-1183B9CB414F> /usr/lib/libobjc.A.dylib
+       0x18d903000 -        0x18d937d07  libdyld.dylib (1378) <B147D877-D0C2-388F-B38D-D3132E39905F> /usr/lib/system/libdyld.dylib
+       0x18d938000 -        0x18d9de217  dyld (1.0.0 - 1378) <A237EF81-B68B-37BA-A165-92C965529534> /usr/lib/dyld
+       0x18d9df000 -        0x18d9e2228  libsystem_blocks.dylib (96) <CC947089-488D-316B-A9C7-46DEC0F73145> /usr/lib/system/libsystem_blocks.dylib
+       0x18d9e3000 -        0x18da3755f  libxpc.dylib (3102.120.13) <C40FCAE8-7A17-3D82-87CB-3DA4802ADEF1> /usr/lib/system/libxpc.dylib
+       0x18da38000 -        0x18da589ff  libsystem_trace.dylib (1861.120.4) <D0FABAB3-5AE7-3F10-8C62-60CBF5D70850> /usr/lib/system/libsystem_trace.dylib
+       0x18da59000 -        0x18db075f7  libcorecrypto.dylib (1922.121.1) <A01A158D-6FE7-3B1C-A2C4-6BCB90D7314A> /usr/lib/system/libcorecrypto.dylib
+       0x18db08000 -        0x18db581d7  libsystem_malloc.dylib (812.100.31) <5FAE4807-4D2B-3A95-A63A-DD96D3DA11B4> /usr/lib/system/libsystem_malloc.dylib
+       0x18db59000 -        0x18dba023f  libdispatch.dylib (1542.100.32) <F071EFE4-299F-3089-ACC4-0025B8FFB52A> /usr/lib/system/libdispatch.dylib
+       0x18dba1000 -        0x18dba3ffb  libsystem_featureflags.dylib (103) <71FCFFBD-85F8-3365-AFE0-BECEA4369122> /usr/lib/system/libsystem_featureflags.dylib
+       0x18dba4000 -        0x18dc24d9f  libsystem_c.dylib (1752.120.2) <694B7881-1BF3-3D0F-8F19-B50AE4E8EF8A> /usr/lib/system/libsystem_c.dylib
+       0x18dc25000 -        0x18dcb5ae7  libc++.1.dylib (2100.43) <5013C0F8-84A9-3B56-9FEB-C353816A750F> /usr/lib/libc++.1.dylib
+       0x18dcb6000 -        0x18dcd075f  libc++abi.dylib (2100.43) <E482D257-E5A0-3816-BD97-7B39342958DA> /usr/lib/libc++abi.dylib
+       0x18dcd1000 -        0x18dd0e2af  libsystem_kernel.dylib (12377.121.6) <CC1CF985-BC65-3725-809F-4C1E36B8F4BA> /usr/lib/system/libsystem_kernel.dylib
+       0x18dd0f000 -        0x18dd1bb3b  libsystem_pthread.dylib (539.100.4) <4F33683C-18C8-39A1-800B-2E3BD43BCC13> /usr/lib/system/libsystem_pthread.dylib
+       0x18dd1c000 -        0x18dd24963  libsystem_platform.dylib (375.120.2) <160FD864-8D15-36FC-9E97-9725388CFAFE> /usr/lib/system/libsystem_platform.dylib
+       0x18dd25000 -        0x18dd546eb  libsystem_info.dylib (600) <3D62F2D9-F516-31BF-83C7-E203D872300B> /usr/lib/system/libsystem_info.dylib
+       0x191cec000 -        0x191cf5e5f  libsystem_darwin.dylib (1752.120.2) <8858F025-745A-388E-9544-080781CC9A69> /usr/lib/system/libsystem_darwin.dylib
+       0x192157000 -        0x1921691b6  libsystem_notify.dylib (348.120.4) <64D76451-1E0C-369B-A631-54DA3140E083> /usr/lib/system/libsystem_notify.dylib
+       0x194424000 -        0x19443ef7b  libsystem_networkextension.dylib (2226.121.1) <0331EE20-A1FB-3C0D-990A-F65939CFF505> /usr/lib/system/libsystem_networkextension.dylib
+       0x1944c1000 -        0x1944d8fdf  libsystem_asl.dylib (406) <F40838DF-2F15-3F62-970F-DEE25706BF1B> /usr/lib/system/libsystem_asl.dylib
+       0x19607f000 -        0x196087387  libsystem_symptoms.dylib (2169.120.7) <F5029F5C-1BF3-31C7-892E-BC8606AC829E> /usr/lib/system/libsystem_symptoms.dylib
+       0x19a323000 -        0x19a35b257  libsystem_containermanager.dylib (725.120.2) <518BE44D-AA31-31E6-B44B-A37AD5E47040> /usr/lib/system/libsystem_containermanager.dylib
+       0x19b734000 -        0x19b7385d7  libsystem_configuration.dylib (1405.120.5) <0F7BBC1C-3D50-3E59-A31F-E4672A80BCEB> /usr/lib/system/libsystem_configuration.dylib
+       0x19b739000 -        0x19b73f8cf  libsystem_sandbox.dylib (2680.120.12) <EC3A75EA-44C0-3A0B-9BF7-71C117B0A9C6> /usr/lib/system/libsystem_sandbox.dylib
+       0x19cd93000 -        0x19cd961fb  libquarantine.dylib (196.120.2) <5849009B-ACA3-3796-94C4-BBDF8D300EBA> /usr/lib/system/libquarantine.dylib
+       0x19d532000 -        0x19d538d03  libsystem_coreservices.dylib (191.4.5) <9576143B-C303-35A3-BA63-1FD06EDA2BB1> /usr/lib/system/libsystem_coreservices.dylib
+       0x19dabd000 -        0x19dafaa77  libsystem_m.dylib (3312.100.1) <A7E0863C-101A-31A0-922B-ED9B02626151> /usr/lib/system/libsystem_m.dylib
+       0x19dafc000 -        0x19daff527  libmacho.dylib (1378) <755441B4-C034-3E3A-8E3C-F424FBB28261> /usr/lib/system/libmacho.dylib
+       0x19db19000 -        0x19db263a7  libcommonCrypto.dylib (600035) <CE357BB1-2D49-37CC-9FFE-D093936B1475> /usr/lib/system/libcommonCrypto.dylib
+       0x19db27000 -        0x19db30ca3  libunwind.dylib (2100.2) <FC8F0C4E-6FB0-3E27-ABEF-B0FA720CD5E4> /usr/lib/system/libunwind.dylib
+       0x19db39000 -        0x19db437ff  libcopyfile.dylib (240) <8ACFAC7A-88E9-3EF4-853F-A9140FF110E5> /usr/lib/system/libcopyfile.dylib
+       0x19db44000 -        0x19db47987  libcompiler_rt.dylib (103.3) <AA79151F-C19D-3C7C-92F8-B10F04D82C1C> /usr/lib/system/libcompiler_rt.dylib
+       0x19db48000 -        0x19db4c78b  libsystem_collections.dylib (1752.120.2) <72DB5BE7-EF78-37D0-8AAD-53E37CFE4287> /usr/lib/system/libsystem_collections.dylib
+       0x19db4d000 -        0x19db504cf  libsystem_secinit.dylib (168.100.7) <E525C566-CDA4-3D99-B12B-1615FD54A1F3> /usr/lib/system/libsystem_secinit.dylib
+       0x19db51000 -        0x19db53bf7  libremovefile.dylib (85.100.6) <635E661D-80A7-340D-A165-3F7D318FDFC9> /usr/lib/system/libremovefile.dylib
+       0x19db54000 -        0x19db54f27  libkeymgr.dylib (31) <8C08891A-DF1C-3DCC-AB64-4742FD6BE9BA> /usr/lib/system/libkeymgr.dylib
+       0x19db55000 -        0x19db5de37  libsystem_dnssd.dylib (2881.120.11) <6F45DF3F-233B-3BC3-BA8C-B43E7DA884BF> /usr/lib/system/libsystem_dnssd.dylib
+       0x19db5e000 -        0x19db6309b  libcache.dylib (95) <189B576E-6176-3F82-8FA4-5914B0BEAEE7> /usr/lib/system/libcache.dylib
+       0x19db64000 -        0x19db65ce3  libSystem.B.dylib (1356) <D65E4112-C151-3FF8-BEB7-4841436012D6> /usr/lib/libSystem.B.dylib
+       0x290d9b000 -        0x290da2349  libRosetta.dylib (367.9) <8651ED4F-6506-3788-B56B-32EE414A85CA> /usr/lib/libRosetta.dylib
+       0x2929b8000 -        0x2929bba4b  libsystem_darwindirectory.dylib (122) <CF277A2C-C818-3F16-8B3F-3C7B39FCD164> /usr/lib/system/libsystem_darwindirectory.dylib
+       0x2929bc000 -        0x2929c55d3  libsystem_eligibility.dylib (319.121.1) <DDAC0531-0262-3DDC-8EC8-80EB9438847A> /usr/lib/system/libsystem_eligibility.dylib
+       0x2929c6000 -        0x2929cd88b  libsystem_sanitizers.dylib (26.1) <44C4234F-8B2D-38D3-A774-B4B3C75AF3A7> /usr/lib/system/libsystem_sanitizers.dylib
+       0x2929ce000 -        0x2929cebb7  libsystem_trial.dylib (474.2.18.2) <68C583BA-AFF5-3916-86AE-6E38BFEF98D6> /usr/lib/system/libsystem_trial.dylib
