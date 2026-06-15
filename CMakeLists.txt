@@ -21,6 +21,7 @@ add_executable(LowLatencyPlayground main.cpp
         include/llp/order_book_side_flat.hpp
         include/llp/price_level_array_book_side.hpp
         include/llp/flat_matching_engine.hpp
+        include/llp/order_id_index.hpp
 )
 target_include_directories(LowLatencyPlayground PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}
@@ -49,6 +50,7 @@ add_executable(llp_tests
         tests/test_order_book_side_flat.cpp
         tests/test_price_level_array_book_side.cpp
         tests/test_flat_matching_engine.cpp
+        tests/test_order_id_index.cpp
 )
 target_include_directories(llp_tests PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -152,6 +154,8 @@ add_llp_benchmark(benchmark_flat_matching_engine
         benchmarks/stage_08_profiling/benchmark_flat_matching_engine.cpp)
 add_llp_benchmark(benchmark_flat_matching_engine_hot_path
         benchmarks/stage_08_profiling/benchmark_flat_matching_engine_hot_path.cpp)
+add_llp_benchmark(benchmark_order_id_idx
+        benchmarks/stage_08_profiling/benchmark_order_id_idx.cpp)
 
 enable_testing()
 include(GoogleTest)
