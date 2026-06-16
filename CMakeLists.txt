@@ -159,6 +159,10 @@ add_llp_benchmark(benchmark_order_id_idx
 add_llp_benchmark(benchmark_price_level_container
         benchmarks/stage_08_profiling/benchmark_price_level_container.cpp)
 
+# ============ Stage 9. Language level optimization ============
+add_llp_benchmark(benchmark_optimization_levels
+        benchmarks/stage_09_language_level_optimization/benchmark_optimization_levels.cpp)
+
 enable_testing()
 include(GoogleTest)
 gtest_discover_tests(llp_tests)
