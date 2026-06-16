@@ -45,7 +45,6 @@ MatchingBenchmarkOrders generate_resting_bids(std::size_t count) {
 
         result.resting.push_back(ask);
     }
-
     return result;
 }
 

@@ -156,6 +156,8 @@ add_llp_benchmark(benchmark_flat_matching_engine_hot_path
         benchmarks/stage_08_profiling/benchmark_flat_matching_engine_hot_path.cpp)
 add_llp_benchmark(benchmark_order_id_idx
         benchmarks/stage_08_profiling/benchmark_order_id_idx.cpp)
+add_llp_benchmark(benchmark_price_level_container
+        benchmarks/stage_08_profiling/benchmark_price_level_container.cpp)
 
 enable_testing()
 include(GoogleTest)
