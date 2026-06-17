@@ -41,30 +41,6 @@ Do not use `-masm=intel` on Apple Silicon. The output is ARM64/AArch64 assembly,
 
 ## Other Machine Commands
 
-### clang++ on x86_64
-
-Use these commands if the other machine has clang.
-
-```bash
-mkdir -p notes/stage_09_language_level_optimization/topic_01_compiler_flags_and_codegen/task_04_assembly_inspection/x86_64_clang
-
-clang++ -std=c++23 -O0 -I include -S -masm=intel \
-  benchmarks/stage_09_language_level_optimization/benchmark_optimization_levels.cpp \
-  -o notes/stage_09_language_level_optimization/topic_01_compiler_flags_and_codegen/task_04_assembly_inspection/x86_64_clang/benchmark_optimization_levels_O0.s
-
-clang++ -std=c++23 -O2 -DNDEBUG -I include -S -masm=intel \
-  benchmarks/stage_09_language_level_optimization/benchmark_optimization_levels.cpp \
-  -o notes/stage_09_language_level_optimization/topic_01_compiler_flags_and_codegen/task_04_assembly_inspection/x86_64_clang/benchmark_optimization_levels_O2.s
-
-clang++ -std=c++23 -O3 -DNDEBUG -I include -S -masm=intel \
-  benchmarks/stage_09_language_level_optimization/benchmark_optimization_levels.cpp \
-  -o notes/stage_09_language_level_optimization/topic_01_compiler_flags_and_codegen/task_04_assembly_inspection/x86_64_clang/benchmark_optimization_levels_O3.s
-
-clang++ -std=c++23 -O3 -march=native -DNDEBUG -I include -S -masm=intel \
-  benchmarks/stage_09_language_level_optimization/benchmark_optimization_levels.cpp \
-  -o notes/stage_09_language_level_optimization/topic_01_compiler_flags_and_codegen/task_04_assembly_inspection/x86_64_clang/benchmark_optimization_levels_O3_march_native.s
-```
-
 ### g++ on x86_64
 
 Use these commands if the other machine has GCC.
