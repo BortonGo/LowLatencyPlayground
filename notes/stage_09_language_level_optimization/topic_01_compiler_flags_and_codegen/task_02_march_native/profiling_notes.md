@@ -23,14 +23,14 @@
 | Release -O3 -march=native  | 4'273µs / 2.34007e+08 ops/s  | 3'913µs / 2.55504e+08 ops/s  | 4'166µs / 2.40038e+08 ops/s  |   15'434µs / 6.47899e+07 ops/s |
 
 
-### Процессор Intel i7 ()
+### Процессор Intel  i7-13620H
 
-| Build                      |                   Sum prices |            Count price above |           Count valid orders |              Copy matching ids |
-| -------------------------: | ---------------------------: | ---------------------------: | ---------------------------: | -----------------------------: |
-| Release                    | 2'123µs / 4.70912e+08 ops/s  | 1'786µs / 5.59793e+08 ops/s  | 1'401µs / 7.13458e+08 ops/s  |    2'854µs / 3.50345e+08 ops/s |
-| Release -O3                | 2'425µs / 4.12208e+08 ops/s  | 2'136µs / 4.67955e+08 ops/s  | 2'069µs / 4.83287e+08 ops/s  |    3'450µs / 2.89785e+08 ops/s |
-| Release -march=native      | 4'387µs / 2.27912e+08 ops/s  | 4'247µs /  2.3546e+08 ops/s  | 3'988µs / 2.50708e+08 ops/s  |   15'743µs / 6.35186e+07 ops/s |
-| Release -O3 -march=native  | 4'273µs / 2.34007e+08 ops/s  | 3'913µs / 2.55504e+08 ops/s  | 4'166µs / 2.40038e+08 ops/s  |   15'434µs / 6.47899e+07 ops/s |
+| Build                      |                   Sum prices |            Count price above |           Count valid orders |           Copy matching ids |
+| -------------------------: | ---------------------------: | ---------------------------: | ---------------------------: |----------------------------:|
+| Release                    | 1'511us / 6.61551e+08 ops/s  | 1'519us / 6.58198e+08 ops/s  | 1'661us / 6.02011e+08 ops/s  | 2'110us / 4.73934e+08 ops/s |
+| Release -O3                | 1'523us / 6.56556e+08 ops/s  | 1'361us / 7.34322e+08 ops/s  | 1'558us / 6.41725e+08 ops/s  | 2'007us / 4.98033e+08 ops/s |
+| Release -march=native      | 3'646us / 2.74243e+08 ops/s  | 4'296us /  2.32731e+08 ops/s  | 4'141us / 2.4147e+08 ops/s  | 6'796us / 1.47137e+08 ops/s |
+| Release -O3 -march=native  | 1'761us / 5.67859e+08 ops/s  | 1'586us / 6.30318e+08 ops/s  | 2'036us / 4.91014e+08 ops/s  | 3'703us / 2.70044e+08 ops/s |
 
 
 ## Commands
