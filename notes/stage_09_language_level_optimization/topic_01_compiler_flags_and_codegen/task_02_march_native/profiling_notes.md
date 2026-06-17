@@ -4,39 +4,50 @@
 
 - Benchmark: `benchmark_optimization_levels`
 - Notes: `notes/stage_09_language_level_optimization/topic_01_compiler_flags_and_codegen/task_02_march_native/profiling_notes.md`
+- Local compiler: Apple clang 21.0.0, target `arm64-apple-darwin25.5.0`
 
 ## Analysis
 
 Один и тот же benchmark запускался в разных build-конфигурациях.
-Задача измерения: посмотреть, как уровень оптимизации влияет на простые hot loops:
-суммирование, branch-heavy count, validation и копирование подходящих id в заранее подготовленный output.
+Задача измерения: проверить, дает ли `-march=native` выигрыш на текущей машине.
+
+Важно: текущие результаты для `Release -march=native` нельзя считать финальным сравнением.
+Команда
+
+```bash
+cmake -S . -B cmake-build-release-march-native -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE="-march=native -DNDEBUG"
+```
+
+заменяет дефолтные release flags CMake. На этой машине обычный `Release` собирается как `-O3 -DNDEBUG`,
+а вариант выше собрался без `-O2/-O3`. Поэтому он сравнивает не только `march`, но и потерю optimization level.
 
 ## Outputs
 
-### Процессор Apple M5 clang
+### Current Fixed Measurements
 
-| Build                      |                   Sum prices |            Count price above |           Count valid orders |              Copy matching ids |
-| -------------------------: | ---------------------------: | ---------------------------: | ---------------------------: | -----------------------------: |
-| Release                    | 2'123µs / 4.70912e+08 ops/s  | 1'786µs / 5.59793e+08 ops/s  | 1'401µs / 7.13458e+08 ops/s  |    2'854µs / 3.50345e+08 ops/s |
-| Release -O3                | 2'425µs / 4.12208e+08 ops/s  | 2'136µs / 4.67955e+08 ops/s  | 2'069µs / 4.83287e+08 ops/s  |    3'450µs / 2.89785e+08 ops/s |
-| Release -march=native      | 4'387µs / 2.27912e+08 ops/s  | 4'247µs /  2.3546e+08 ops/s  | 3'988µs / 2.50708e+08 ops/s  |   15'743µs / 6.35186e+07 ops/s |
-| Release -O3 -march=native  | 4'273µs / 2.34007e+08 ops/s  | 3'913µs / 2.55504e+08 ops/s  | 4'166µs / 2.40038e+08 ops/s  |   15'434µs / 6.47899e+07 ops/s |
+Local machine: Apple clang 21.0.0, arm64.  
+Value: median of 3 runs by elapsed time.
 
+| Build | Sum prices | Count price above | Count valid orders | Copy matching ids |
+|---|---:|---:|---:|---:|
+| Release | 898us / 1.11359e+09 ops/s | 462us / 2.16022e+09 ops/s | 487us / 2.0504e+09 ops/s | 1'485us / 6.73382e+08 ops/s |
+| Release -O3 | 789us / 1.26656e+09 ops/s | 412us / 2.42302e+09 ops/s | 533us / 1.87281e+09 ops/s | 1'773us / 5.63751e+08 ops/s |
+| Release -O3 -march=native | 721us / 1.3856e+09 ops/s | 501us / 1.99567e+09 ops/s | 551us / 1.81488e+09 ops/s | 1'441us / 6.93722e+08 ops/s |
 
-### Процессор Intel  i7-13620H gcc
+### External Measurements
 
-| Build                      |                   Sum prices |            Count price above |           Count valid orders |           Copy matching ids |
-| -------------------------: | ---------------------------: | ---------------------------: | ---------------------------: |----------------------------:|
+Intel i7-13620H gcc results from a separate machine:
+
+| Build | Sum prices | Count price above | Count valid orders | Copy matching ids |
+|---|---:|---:|---:|---:|
 | Release                    | 1'511us / 6.61551e+08 ops/s  | 1'519us / 6.58198e+08 ops/s  | 1'661us / 6.02011e+08 ops/s  | 2'110us / 4.73934e+08 ops/s |
 | Release -O3                | 1'523us / 6.56556e+08 ops/s  | 1'361us / 7.34322e+08 ops/s  | 1'558us / 6.41725e+08 ops/s  | 2'007us / 4.98033e+08 ops/s |
 | Release -march=native      | 3'646us / 2.74243e+08 ops/s  | 4'296us /  2.32731e+08 ops/s  | 4'141us / 2.4147e+08 ops/s  | 6'796us / 1.47137e+08 ops/s |
 | Release -O3 -march=native  | 1'761us / 5.67859e+08 ops/s  | 1'586us / 6.30318e+08 ops/s  | 2'036us / 4.91014e+08 ops/s  | 3'703us / 2.70044e+08 ops/s |
 
-
 ## Commands
 
 ```bash
-
 cmake -S . -B cmake-build-release -DCMAKE_BUILD_TYPE=Release
 cmake --build cmake-build-release --target benchmark_optimization_levels
 ./cmake-build-release/benchmark_optimization_levels
@@ -45,19 +56,15 @@ cmake -S . -B cmake-build-o3 -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEAS
 cmake --build cmake-build-o3 --target benchmark_optimization_levels
 ./cmake-build-o3/benchmark_optimization_levels
 
-cmake -S . -B cmake-build-release-march-native -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE="-march=native -DNDEBUG"
-cmake --build cmake-build-release-march-native --target benchmark_optimization_levels
-./cmake-build-release-march-native/benchmark_optimization_levels
-
-cmake -S . -B cmake-build-o3-march-native -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE="-O3 -march=native -DNDEBUG"
-cmake --build cmake-build-o3-march-native --target benchmark_optimization_levels
-./cmake-build-o3-march-native/benchmark_optimization_levels
+cmake -S . -B cmake-build-release-march-native-fixed -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE="-O3 -march=native -DNDEBUG"
+cmake --build cmake-build-release-march-native-fixed --target benchmark_optimization_levels
+./cmake-build-release-march-native-fixed/benchmark_optimization_levels
 ```
 
 ## Notes
 
-- Best `sum_prices`: `Release`.
-- Best `count_price_above`: `Release`.
-- Best `count_valid_orders`: `Release`, almost equal to `Release -O2`.
-- Best `copy_matching_ids`: `Release -O2`, with `RelWithDebInfo` close behind.
-- `-O3` is not automatically faster here. In this run it is worse than plain `Release` for the read/count scenarios and worse than `Release -O2` for the copy scenario.
+- `Release -march=native` from this run is not a valid baseline because it dropped `-O3`.
+- `Release -O3 -march=native` is the meaningful `march` row in the current local table.
+- On Apple clang, `-O3 -march=native` improved `sum_prices` and `copy_matching_ids`, but was worse on the two branch/count workloads.
+- On Intel gcc, current data also does not show a win from `-O3 -march=native` over plain `Release`/`Release -O3`.
+- Binary built with `-march=native` should not be treated as portable: it may use instructions available only on the build machine CPU.
