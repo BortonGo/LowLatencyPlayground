@@ -106,11 +106,13 @@ int main() {
     }
 
     sum_prices("SUM PRICES", orders);
+    /*
     printModulo();
     count_price_above("COUNT PRICE ABOVE", orders, 500);
     printModulo();
     count_valid_orders("COUNT VALID ORDERS", orders);
     printModulo();
     copy_matching_ids("COPY MATCHING IDS", orders, 500, order_ids);
+    */
     return 0;
 }
