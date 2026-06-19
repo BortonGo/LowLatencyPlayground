@@ -45,15 +45,35 @@ void generate_rand_orders(std::vector<llp::Order>& orders) {
 }
 
 
-std::uint64_t run_bench(std::string_view name, const std::vector<llp::Order>& orders) {
+std::uint64_t run_bench_good_hint(std::string_view name, const std::vector<llp::Order>& orders) {
     std::uint64_t checksum = 0;
     std::uint64_t sum = 0;
 
     const auto start = std::chrono::steady_clock::now();
     for (auto order : orders) {
-        if (order.id > 0 && order.price > 0) {
+        if (order.id > 0 && order.price > 0) [[likely]] {
             sum += order.price;
             checksum += order.id;
+        } else [[unlikely]] {
+            checksum += order.quantity;
+        }
+    }
+    const auto end = std::chrono::steady_clock::now();
+    printStats(name, start, end, checksum, orders_cnt);
+    return sum;
+}
+
+std::uint64_t run_bench_bad_hint(std::string_view name, const std::vector<llp::Order>& orders) {
+    std::uint64_t checksum = 0;
+    std::uint64_t sum = 0;
+
+    const auto start = std::chrono::steady_clock::now();
+    for (auto order : orders) {
+        if (order.id > 0 && order.price > 0) [[unlikely]] {
+            sum += order.price;
+            checksum += order.id;
+        } else [[likely]] {
+            checksum += order.quantity;
         }
     }
     const auto end = std::chrono::steady_clock::now();
@@ -77,24 +97,23 @@ int main() {
     std::vector<llp::Order> orders_50;
     orders_50.reserve(orders_cnt);
 
-    std::vector<llp::Order> orders_rand;
-    orders_rand.reserve(orders_cnt);
-
     generate_orders(orders_99, 99);
     generate_orders(orders_90, 90);
     generate_orders(orders_50, 99);
-    generate_rand_orders(orders_rand);
 
-    run_bench("99% Valid", orders_99);
+    run_bench_good_hint("99% Valid GOOD HINT", orders_99);
+    std::cout << '\n';
+    run_bench_bad_hint("99% Valid BAD HINT", orders_99);
     printModulo();
 
-    run_bench("90% Valid", orders_90);
+    run_bench_good_hint("90% Valid GOOD HINT", orders_90);
+    std::cout << '\n';
+    run_bench_bad_hint("90% Valid BAD HINT", orders_90);
     printModulo();
 
-    run_bench("50% Valid", orders_50);
-    printModulo();
-
-    run_bench("Random Valid", orders_rand);
+    run_bench_good_hint("50% Valid GOOD HINT", orders_50);
+    std::cout << '\n';
+    run_bench_bad_hint("50% Valid BAD HINT", orders_50);
 
     return 0;
 }
