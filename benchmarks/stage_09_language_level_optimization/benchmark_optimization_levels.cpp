@@ -3,7 +3,6 @@
 #include <cstddef>
 #include <chrono>
 #include <vector>
-#include <deque>
 #include <algorithm>
 #include <string_view>
 #include "llp/order.hpp"

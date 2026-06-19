@@ -162,6 +162,8 @@ add_llp_benchmark(benchmark_price_level_container
 # ============ Stage 9. Language level optimization ============
 add_llp_benchmark(benchmark_optimization_levels
         benchmarks/stage_09_language_level_optimization/benchmark_optimization_levels.cpp)
+add_llp_benchmark(benchmark_branch_distribution
+        benchmarks/stage_09_language_level_optimization/benchmark_branch_distribution.cpp)
 
 enable_testing()
 include(GoogleTest)
