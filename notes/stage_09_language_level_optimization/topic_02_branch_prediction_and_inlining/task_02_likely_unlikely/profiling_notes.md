@@ -16,21 +16,27 @@
 
 (средне из 3х прогонов)
 
-| Build               |                   Run bench |
-| --------------      | ---------------------------:|
-| 99% Valid           |  485µs / 2.05333e+09 ops/s  |
-| 99% Valid GOOD HINT |  476µs / 2.09754e+09 ops/s  |
-| 99% Valid BAD HINT  |  492µs / 2.03028e+09 ops/s  |
-| 90% Valid           |  485µs / 2.05666e+09 ops/s  |
-| 90% Valid GOOD HINT |  655µs / 1.52507e+09 ops/s  |
-| 90% Valid BAD HINT  |  712µs / 1.40367e+09 ops/s  |
-| 50% Valid           |  476µs / 2.09666e+09 ops/s  |
-| 50% Valid GOOD HINT |  848µs / 1.17867e+09 ops/s  |
-| 50% Valid BAD HINT  |  441µs / 2.26287e+09 ops/s  |
-
+| Build                              |                    Run bench |
+| ---------------------------------- | ----------------------------:|
+| 99% Valid  BASELINE                |  498µs / 2.00518e+09 ops/s   |
+| 99% Valid GOOD HINT                |  494µs / 2.02207e+09 ops/s   |
+| 99% Valid BAD HINT                 |  586µs / 1.70503e+09 ops/s   |
+|                                    |                              |
+| 90% Valid  BASELINE                |  869µs / 1.14992e+09 ops/s   |
+| 90% Valid GOOD HINT                |  861µs / 1.16105e+09 ops/s   |
+| 90% Valid BAD HINT                 |  1048µs / 9.53782e+08 ops/s  |
+|                                    |                              |
+| 50% Valid  BASELINE                |  2768µs / 3.61152e+08 ops/s  |
+| 50% Valid GOOD HINT                |  2506µs / 3.98969e+08 ops/s  |
+| 50% Valid BAD HINT                 |  2620µs / 3.81619e+08 ops/s  |
+|                                    |                              |
+| RANDOMIZED 50% VALID  BASELINE     |  2653µs / 3.7689e+08 ops/s   |
+| RANDOMIZED 50% VALID 50% GOOD HINT |  2541µs / 3.93494e+08 ops/s  |
+| RANDOMIZED 50% VALID 50% BAD HINT  |  2676µs / 3.73593e+08 ops/s  |
 
 ## Conclusion
 
-- `90%`: good hint дает небольшое преимущество.
-- `99%`: good hint не дает преимущество.
-- `50%`: т.к. good hin не отличается от bad hint, то branch predictor ведет себя странно (bad hint дает лучше результат).
+Hints почти не помогают, когда baseline branch predictor и так хорошо справляется.
+Неверный hint может заметно навредить.
+Hints стоит использовать только при стабильном и измеренном перекосе данных,
+а не как общую оптимизацию validation code.
