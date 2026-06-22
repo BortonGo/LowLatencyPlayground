@@ -164,6 +164,8 @@ add_llp_benchmark(benchmark_optimization_levels
         benchmarks/stage_09_language_level_optimization/benchmark_optimization_levels.cpp)
 add_llp_benchmark(benchmark_branch_distribution
         benchmarks/stage_09_language_level_optimization/benchmark_branch_distribution.cpp)
+add_llp_benchmark(benchmark_inline_noinline
+        benchmarks/stage_09_language_level_optimization/benchmark_inline_noinline.cpp)
 
 enable_testing()
 include(GoogleTest)

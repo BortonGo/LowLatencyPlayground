@@ -2,7 +2,7 @@
 
 ## Цель
 
-Сравнить `__builtin_expect` с baseline и `[[likely]]`.
+* [ ]
 
 ## Что Сделать
 

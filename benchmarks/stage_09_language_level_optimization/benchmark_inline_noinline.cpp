@@ -45,7 +45,19 @@ void generate_orders(std::vector<llp::Order>& orders, std::size_t valid_percent,
     std::shuffle(orders.begin(), orders.end(), rng);
 }
 
-std::uint64_t run_bench_baseline(std::string_view name, const std::vector<llp::Order>& orders) {
+bool isValid(const llp::Order& order) {
+    return order.id > 0 && order.price > 0;
+}
+
+[[gnu::always_inline]] bool isValidAlwaysInline(const llp::Order& order) {
+    return order.id > 0 && order.price > 0;
+}
+
+[[gnu::noinline]] bool isValidNoinline(const llp::Order& order) {
+    return order.id > 0 && order.price > 0;
+}
+
+std::uint64_t run_bench_inside_loop(std::string_view name, const std::vector<llp::Order>& orders) {
     std::uint64_t checksum = 0;
     std::uint64_t sum = 0;
 
@@ -63,49 +75,13 @@ std::uint64_t run_bench_baseline(std::string_view name, const std::vector<llp::O
     return sum;
 }
 
-std::uint64_t run_bench_good_hint(std::string_view name, const std::vector<llp::Order>& orders) {
+std::uint64_t run_bench_normal_helper(std::string_view name, const std::vector<llp::Order>& orders) {
     std::uint64_t checksum = 0;
     std::uint64_t sum = 0;
 
     const auto start = std::chrono::steady_clock::now();
     for (const auto& order : orders) {
-        if (order.id > 0 && order.price > 0) [[likely]] {
-            sum += order.price;
-            checksum += order.id;
-        } else [[unlikely]] {
-            checksum += order.quantity;
-        }
-    }
-    const auto end = std::chrono::steady_clock::now();
-    printStats(name, start, end, checksum, orders_cnt);
-    return sum;
-}
-
-std::uint64_t run_bench_bad_hint(std::string_view name, const std::vector<llp::Order>& orders) {
-    std::uint64_t checksum = 0;
-    std::uint64_t sum = 0;
-
-    const auto start = std::chrono::steady_clock::now();
-    for (const auto& order : orders) {
-        if (order.id > 0 && order.price > 0) [[unlikely]] {
-            sum += order.price;
-            checksum += order.id;
-        } else [[likely]] {
-            checksum += order.quantity;
-        }
-    }
-    const auto end = std::chrono::steady_clock::now();
-    printStats(name, start, end, checksum, orders_cnt);
-    return sum;
-}
-
-std::uint64_t run_bench_good_hint_builtin_expect(std::string_view name, const std::vector<llp::Order>& orders) {
-    std::uint64_t checksum = 0;
-    std::uint64_t sum = 0;
-
-    const auto start = std::chrono::steady_clock::now();
-    for (const auto& order : orders) {
-        if (__builtin_expect(order.id > 0 && order.price > 0, true)) {
+        if (isValid(order)) {
             sum += order.price;
             checksum += order.id;
         } else {
@@ -117,13 +93,13 @@ std::uint64_t run_bench_good_hint_builtin_expect(std::string_view name, const st
     return sum;
 }
 
-std::uint64_t run_bench_bad_hint_builtin_expect(std::string_view name, const std::vector<llp::Order>& orders) {
+std::uint64_t run_bench_always_inline(std::string_view name, const std::vector<llp::Order>& orders) {
     std::uint64_t checksum = 0;
     std::uint64_t sum = 0;
 
     const auto start = std::chrono::steady_clock::now();
     for (const auto& order : orders) {
-        if (__builtin_expect(order.id > 0 && order.price > 0, false)) {
+        if (isValidAlwaysInline(order)) {
             sum += order.price;
             checksum += order.id;
         } else {
@@ -134,6 +110,25 @@ std::uint64_t run_bench_bad_hint_builtin_expect(std::string_view name, const std
     printStats(name, start, end, checksum, orders_cnt);
     return sum;
 }
+
+std::uint64_t run_bench_noinline(std::string_view name, const std::vector<llp::Order>& orders) {
+    std::uint64_t checksum = 0;
+    std::uint64_t sum = 0;
+
+    const auto start = std::chrono::steady_clock::now();
+    for (const auto& order : orders) {
+        if (isValidNoinline(order)) {
+            sum += order.price;
+            checksum += order.id;
+        } else {
+            checksum += order.quantity;
+        }
+    }
+    const auto end = std::chrono::steady_clock::now();
+    printStats(name, start, end, checksum, orders_cnt);
+    return sum;
+}
+
 
 void printModulo() {
     std::cout << '\n';
@@ -145,73 +140,30 @@ int main() {
     std::vector<llp::Order> orders_99;
     orders_99.reserve(orders_cnt);
 
-    std::vector<llp::Order> orders_90;
-    orders_90.reserve(orders_cnt);
-
     std::vector<llp::Order> orders_50;
     orders_50.reserve(orders_cnt);
 
-    std::vector<llp::Order> orders_random;
-    orders_random.reserve(orders_cnt);
-
     generate_orders(orders_99, 99,42);
-    generate_orders(orders_90, 90,42);
     generate_orders(orders_50, 50,42);
-    generate_orders(orders_random, 50, 12345);
 
-
-    run_bench_baseline("99% VALID BASELINE", orders_99);
+    run_bench_inside_loop("99% VALID INSIDE LOOP", orders_99);
     std::cout << '\n';
-    run_bench_good_hint("99% VALID GOOD HINT [[likely]]", orders_99);
+    run_bench_normal_helper("99% VALID NORMAL HELPER", orders_99);
     std::cout << '\n';
-    run_bench_bad_hint("99% VALID BAD HINT [[unlikely]]", orders_99);
+    run_bench_always_inline("99% VALID [[gnu::always_inline]]", orders_99);
     std::cout << '\n';
-    run_bench_good_hint_builtin_expect("99% VALID GOOD HINT __builtin_expect", orders_99);
+    run_bench_noinline("99% VALID [[gnu::noinline]]", orders_99);
     std::cout << '\n';
-    run_bench_bad_hint_builtin_expect("99% VALID BAD HINT __builtin_expect", orders_99);
     printModulo();
 
-    run_bench_baseline("90% VALID BASELINE", orders_90);
+    run_bench_inside_loop("50% VALID INSIDE LOOP", orders_50);
     std::cout << '\n';
-    run_bench_good_hint("90% VALID GOOD HINT [[likely]]", orders_90);
+    run_bench_normal_helper("50% VALID NORMAL HELPER", orders_50);
     std::cout << '\n';
-    run_bench_bad_hint("90% VALID BAD HINT [[unlikely]]", orders_90);
+    run_bench_always_inline("50% VALID [[gnu::always_inline]]", orders_50);
     std::cout << '\n';
-    run_bench_good_hint_builtin_expect("90% VALID GOOD HINT __builtin_expect", orders_90);
+    run_bench_noinline("50% VALID [[gnu::noinline]]", orders_50);
     std::cout << '\n';
-    run_bench_bad_hint_builtin_expect("90% VALID BAD HINT __builtin_expect", orders_90);
-    printModulo();
 
-    run_bench_baseline("50% VALID BASELINE", orders_50);
-    std::cout << '\n';
-    run_bench_good_hint("50% VALID GOOD HINT [[likely]]", orders_50);
-    std::cout << '\n';
-    run_bench_bad_hint("50% VALID BAD HINT [[unlikely]]", orders_50);
-    std::cout << '\n';
-    run_bench_good_hint_builtin_expect("50% VALID GOOD HINT __builtin_expect", orders_50);
-    std::cout << '\n';
-    run_bench_bad_hint_builtin_expect("50% VALID BAD HINT __builtin_expect", orders_50);
-    printModulo();
-
-    run_bench_baseline("RANDOMIZED 50% VALID BASELINE", orders_random);
-    std::cout << '\n';
-    run_bench_good_hint("RANDOMIZED 50% VALID GOOD HINT [[likely]]", orders_random);
-    std::cout << '\n';
-    run_bench_bad_hint("RANDOMIZED 50% VALID BAD HINT [[unlikely]]", orders_random);
-    std::cout << '\n';
-    run_bench_good_hint_builtin_expect("RANDOMIZED 50% VALID GOOD HINT __builtin_expect", orders_random);
-    std::cout << '\n';
-    run_bench_bad_hint_builtin_expect("RANDOMIZED 50% VALID BAD HINT __builtin_expect", orders_random);
-
-    /*
-    run_bench_baseline("99% VALID BASELINE", orders_99);
-    printModulo();
-    run_bench_baseline("90% VALID BASELINE", orders_90);
-    printModulo();
-    run_bench_baseline("50% VALID BASELINE", orders_50);
-    printModulo();
-    run_bench_baseline("RANDOMIZED 50% VALID BASELINE", orders_random);
-    printModulo();
-    */
     return 0;
 }
