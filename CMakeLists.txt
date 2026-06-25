@@ -166,6 +166,8 @@ add_llp_benchmark(benchmark_branch_distribution
         benchmarks/stage_09_language_level_optimization/benchmark_branch_distribution.cpp)
 add_llp_benchmark(benchmark_inline_noinline
         benchmarks/stage_09_language_level_optimization/benchmark_inline_noinline.cpp)
+add_llp_benchmark(benchmark_manual_simd_price_filter
+        benchmarks/stage_09_language_level_optimization/benchmark_manual_simd_price_filter.cpp)
 
 enable_testing()
 include(GoogleTest)
