@@ -129,7 +129,6 @@ std::uint64_t run_bench_noinline(std::string_view name, const std::vector<llp::O
     return sum;
 }
 
-
 void printModulo() {
     std::cout << '\n';
     std::cout<< "----------------------------------------------------------" << '\n';
