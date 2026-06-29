@@ -172,6 +172,8 @@ add_llp_benchmark(benchmark_simd_batch_validation
         benchmarks/stage_09_language_level_optimization/benchmark_simd_batch_validation.cpp)
 add_llp_benchmark(benchmark_memory_access_patterns
         benchmarks/stage_09_language_level_optimization/benchmark_memory_access_patterns.cpp)
+add_llp_benchmark(benchmark_software_prefetch
+        benchmarks/stage_09_language_level_optimization/benchmark_software_prefetch.cpp)
 
 enable_testing()
 include(GoogleTest)

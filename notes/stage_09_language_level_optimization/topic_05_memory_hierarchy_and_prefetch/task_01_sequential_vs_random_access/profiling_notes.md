@@ -1,6 +1,6 @@
-# Заметки По Профилированию
+# Profiling notes
 
-## Контекст
+## Context
 
 В этой задаче сравнивался один и тот же checksum, но с разным memory access
 pattern:
@@ -16,7 +16,7 @@ sum_random_indexed(values, indices)
 Генерация `values`, генерация `indices` и `std::shuffle` не входят в measured
 interval.
 
-## Команды
+## Commands
 
 Сборка:
 
@@ -30,62 +30,44 @@ cmake --build cmake-build-release --target benchmark_memory_access_patterns
 ./cmake-build-release/benchmark_memory_access_patterns
 ```
 
-## Исправление По Ходу Проверки
-
-В первой версии benchmark для размеров `1M`, `16M`, `64M` в `printStats`
-передавался `size_64k`. Из-за этого `elapsed` был правильным, но
-`throughput_ops_sec` был неверным.
-
-Было исправлено так:
-
-```cpp
-printStats("SUM SEQUENCE", ..., size_1m);
-printStats("SUM RANDOM ACCESS", ..., size_1m);
-
-printStats("SUM SEQUENCE", ..., size_16m);
-printStats("SUM RANDOM ACCESS", ..., size_16m);
-
-printStats("SUM SEQUENCE", ..., size_64m);
-printStats("SUM RANDOM ACCESS", ..., size_64m);
-```
-
-После этого throughput стал соответствовать реальному числу операций.
-
-## Корректность
+## Correctness
 
 Для каждого размера checksum совпал между sequential и random indexed:
 
-| Size | checksum |
-|---:|---:|
-| 64K | 307'968'000 |
-| 1M | 4'999'500'000 |
-| 16M | 79'992'000'000 |
-| 64M | 319'968'000'000 |
+
+| Size |        checksum |
+| ---: | --------------: |
+|  64K |     307'968'000 |
+|   1M |   4'999'500'000 |
+|  16M |  79'992'000'000 |
+|  64M | 319'968'000'000 |
 
 Это важно: обе функции делают одну и ту же работу по сумме значений, отличается
 только порядок доступа к памяти.
 
-## Замеры
+## Timer
 
 Ниже медианы из 5 запусков по `elapsed`.
 
+
 | Size | Sequential | Random indexed | Slowdown |
-|---:|---:|---:|---:|
-| 64K | 3us | 25us | 8.3x |
-| 1M | 66us | 544us | 8.2x |
-| 16M | 1531us | 40078us | 26.2x |
-| 64M | 6334us | 188258us | 29.7x |
+| ---: | ---------: | -------------: | -------: |
+|  64K |        3us |           25us |     8.3x |
+|   1M |       66us |          544us |     8.2x |
+|  16M |     1531us |        40078us |    26.2x |
+|  64M |     6334us |       188258us |    29.7x |
 
 Пример throughput из контрольного запуска:
 
-| Size | Sequential throughput | Random throughput |
-|---:|---:|---:|
-| 64K | ~17.2e9 ops/sec | ~2.5e9 ops/sec |
-| 1M | ~15.0e9 ops/sec | ~1.8e9 ops/sec |
-| 16M | ~10.4e9 ops/sec | ~0.4e9 ops/sec |
-| 64M | ~10.1e9 ops/sec | ~0.34e9 ops/sec |
 
-## Что Видно
+| Size | Sequential throughput | Random throughput |
+| ---: | --------------------: | ----------------: |
+|  64K |       ~17.2e9 ops/sec |    ~2.5e9 ops/sec |
+|   1M |       ~15.0e9 ops/sec |    ~1.8e9 ops/sec |
+|  16M |       ~10.4e9 ops/sec |    ~0.4e9 ops/sec |
+|  64M |       ~10.1e9 ops/sec |   ~0.34e9 ops/sec |
+
+## What see
 
 Последовательный проход оказался в разы быстрее, особенно на больших размерах.
 
@@ -102,7 +84,7 @@ checksum += value;
 
 Разница в том, как CPU получает `value` из памяти.
 
-## Почему Sequential Быстрее
+## Why Sequential Faster
 
 Sequential loop идет по памяти подряд:
 
@@ -118,7 +100,7 @@ values[0], values[1], values[2], ...
 - load pipeline работает ровнее;
 - меньше TLB/cache misses.
 
-## Почему Random Indexed Медленнее
+## Why Random Indexed Slower
 
 Random indexed loop сначала читает индекс, потом прыгает в случайное место:
 
@@ -136,7 +118,7 @@ checksum += values[indices[i]];
 
 Поэтому на `16M` и `64M` slowdown резко растет.
 
-## Вывод
+## Conclusion
 
 Эта задача хорошо показала, что memory access pattern может быть важнее, чем
 сама операция внутри loop. Последовательный проход без прыжков оказался в разы
