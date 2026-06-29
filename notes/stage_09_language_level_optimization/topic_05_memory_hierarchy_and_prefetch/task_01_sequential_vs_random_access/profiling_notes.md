@@ -131,6 +131,3 @@ checksum += values[indices[i]];
 - cache locality может дать больше, чем микрооптимизация выражения внутри loop;
 - перед `__builtin_prefetch` нужно понять baseline: где именно память стала
   bottleneck.
-
-Задачу считаю засчитанной: benchmark собран, checksum совпадает, разница между
-sequential и random access хорошо видна.

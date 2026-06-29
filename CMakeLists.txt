@@ -174,6 +174,8 @@ add_llp_benchmark(benchmark_memory_access_patterns
         benchmarks/stage_09_language_level_optimization/benchmark_memory_access_patterns.cpp)
 add_llp_benchmark(benchmark_software_prefetch
         benchmarks/stage_09_language_level_optimization/benchmark_software_prefetch.cpp)
+add_llp_benchmark(benchmark_hot_cold_split
+        benchmarks/stage_09_language_level_optimization/benchmark_hot_cold_split.cpp)
 
 enable_testing()
 include(GoogleTest)
