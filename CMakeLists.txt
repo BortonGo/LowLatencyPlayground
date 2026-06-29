@@ -170,6 +170,8 @@ add_llp_benchmark(benchmark_manual_simd_price_filter
         benchmarks/stage_09_language_level_optimization/benchmark_manual_simd_price_filter.cpp)
 add_llp_benchmark(benchmark_simd_batch_validation
         benchmarks/stage_09_language_level_optimization/benchmark_simd_batch_validation.cpp)
+add_llp_benchmark(benchmark_memory_access_patterns
+        benchmarks/stage_09_language_level_optimization/benchmark_memory_access_patterns.cpp)
 
 enable_testing()
 include(GoogleTest)
