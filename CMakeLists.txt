@@ -176,6 +176,8 @@ add_llp_benchmark(benchmark_software_prefetch
         benchmarks/stage_09_language_level_optimization/benchmark_software_prefetch.cpp)
 add_llp_benchmark(benchmark_hot_cold_split
         benchmarks/stage_09_language_level_optimization/benchmark_hot_cold_split.cpp)
+add_llp_benchmark(benchmark_alignment_scan
+        benchmarks/stage_09_language_level_optimization/benchmark_alignment_scan.cpp)
 
 enable_testing()
 include(GoogleTest)
