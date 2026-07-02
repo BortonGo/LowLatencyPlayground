@@ -75,6 +75,8 @@ add_llp_benchmark(benchmark_vector_push_back
         benchmarks/stage_01_measurement_basics/benchmark_vector_push_back.cpp)
 add_llp_benchmark(benchmark_list_vs_vector
         benchmarks/stage_01_measurement_basics/benchmark_list_vs_vector.cpp)
+add_llp_benchmark(benchmark_remove_if_vs_erase_if
+        benchmarks/stage_01_measurement_basics/benchmark_remove_if_vs_erase_if.cpp)
 
 # ============ Stage 2. Cache Locality ============
 add_llp_benchmark(false_sharing_demo
@@ -178,6 +180,8 @@ add_llp_benchmark(benchmark_hot_cold_split
         benchmarks/stage_09_language_level_optimization/benchmark_hot_cold_split.cpp)
 add_llp_benchmark(benchmark_alignment_scan
         benchmarks/stage_09_language_level_optimization/benchmark_alignment_scan.cpp)
+add_llp_benchmark(benchmark_dependency_chain_ilp
+        benchmarks/stage_09_language_level_optimization/benchmark_dependency_chain_ilp.cpp)
 
 enable_testing()
 include(GoogleTest)
