@@ -186,6 +186,8 @@ add_llp_benchmark(benchmark_ring_buffer_update
         benchmarks/stage_09_language_level_optimization/benchmark_ring_index_update.cpp)
 add_llp_benchmark(benchmark_division_strength_reduction
         benchmarks/stage_09_language_level_optimization/benchmark_division_strength_reduction.cpp)
+add_llp_benchmark(benchmark_branchless_select
+        benchmarks/stage_09_language_level_optimization/benchmark_branchless_select.cpp)
 
 enable_testing()
 include(GoogleTest)
