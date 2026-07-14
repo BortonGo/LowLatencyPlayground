@@ -182,6 +182,10 @@ add_llp_benchmark(benchmark_alignment_scan
         benchmarks/stage_09_language_level_optimization/benchmark_alignment_scan.cpp)
 add_llp_benchmark(benchmark_dependency_chain_ilp
         benchmarks/stage_09_language_level_optimization/benchmark_dependency_chain_ilp.cpp)
+add_llp_benchmark(benchmark_ring_buffer_update
+        benchmarks/stage_09_language_level_optimization/benchmark_ring_index_update.cpp)
+add_llp_benchmark(benchmark_division_strength_reduction
+        benchmarks/stage_09_language_level_optimization/benchmark_division_strength_reduction.cpp)
 
 enable_testing()
 include(GoogleTest)
