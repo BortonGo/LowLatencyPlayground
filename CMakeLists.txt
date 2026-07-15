@@ -189,6 +189,11 @@ add_llp_benchmark(benchmark_division_strength_reduction
 add_llp_benchmark(benchmark_branchless_select
         benchmarks/stage_09_language_level_optimization/benchmark_branchless_select.cpp)
 
+# ============ Stage 10. Networking ============
+add_llp_benchmark(benchmark_winsock_socket_options
+        benchmarks/stage_10_low_latency_networking/windows/benchmark_winsock_socket_options.cpp
+        ws2_32)
+
 enable_testing()
 include(GoogleTest)
 gtest_discover_tests(llp_tests)
