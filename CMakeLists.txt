@@ -193,6 +193,8 @@ add_llp_benchmark(benchmark_branchless_select
 add_llp_benchmark(benchmark_winsock_socket_options
         benchmarks/stage_10_low_latency_networking/windows/benchmark_winsock_socket_options.cpp
         ws2_32)
+add_llp_benchmark(benchmark_macos_socket_options
+        benchmarks/stage_10_low_latency_networking/macos/benchmark_macos_socket_options.cpp)
 
 enable_testing()
 include(GoogleTest)
