@@ -195,6 +195,8 @@ add_llp_benchmark(benchmark_winsock_socket_options
         ws2_32)
 add_llp_benchmark(benchmark_macos_socket_options
         benchmarks/stage_10_low_latency_networking/macos/benchmark_macos_socket_options.cpp)
+add_llp_benchmark(benchmark_macos_tcp_echo_roundtrip
+        benchmarks/stage_10_low_latency_networking/macos/benchmark_macos_tcp_echo_roundtrip.cpp)
 
 enable_testing()
 include(GoogleTest)
